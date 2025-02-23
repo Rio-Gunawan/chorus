@@ -1,0 +1,10 @@
+#macOSの関連ファイルを無視
+.DS_Store
+
+#node_modulesを無視
+node_modules
+package-lock.json
+package.json
+
+# ESLint関連のファイル
+eslint.config.mjs
