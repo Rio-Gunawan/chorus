@@ -8,6 +8,3 @@ package.json
 
 # ESLint関連のファイル
 eslint.config.mjs
-
-#ライブラリ
-library
