@@ -61,7 +61,7 @@ h1 {
 }
 
 #player button:hover {
-    background-color: #2d3985;
+    background-color: #2d3985 !important;
     color: white;
 }
 
@@ -76,6 +76,18 @@ button#play_and_pause {
     fill: black;
     /* SVGの色を黒に設定 */
     transition: fill 0.3s;
+}
+
+button#repeat svg {
+    fill: #888;
+}
+
+button#repeat.active {
+    background-color: #6e6e6e;
+}
+
+button#repeat.active svg {
+    fill: white;
 }
 
 button#play_and_pause svg {
