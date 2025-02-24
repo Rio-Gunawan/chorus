@@ -1,0 +1,157 @@
+@charset "UTF-8";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Yu Gothic', 'YuGothic',
+        "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3",
+        "メイリオ", "Meiryo",
+        "MS Pゴシック",
+        "Helvetica Neue", "Helvetica",
+        "Arial", sans-serif;
+}
+
+body {
+    font-size: min(18px, 4vw);
+    background-color: #e5e5e5;
+}
+
+h1 {
+    font-size: 1.5em;
+    font-weight: 400;
+    padding: 0.5em 0;
+    text-align: center;
+    background-color: #2d3985;
+    color: white;
+}
+
+/* 再生ボタン等のあるブロックのスタイル */
+#bottom_menu {
+    background-color: white;
+    border-top: 1px solid #2d3985;
+    width: 100%;
+    padding-top: 10px;
+    position: fixed;
+    bottom: 0;
+}
+
+/* 再生ボタン周辺のスタイル */
+#player {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#player button {
+    background-color: white;
+    border: 1px solid #2d3985;
+    border-radius: 50%;
+
+    width: 45px;
+    height: 45px;
+    margin: 0 5px;
+    cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.3s;
+}
+
+#player button:hover {
+    background-color: #2d3985;
+    color: white;
+}
+
+button#play_and_pause {
+    width: 60px;
+    height: 60px;
+}
+
+#player button svg {
+    width: 25px;
+    height: 25px;
+    fill: black;
+    /* SVGの色を黒に設定 */
+    transition: fill 0.3s;
+}
+
+button#play_and_pause svg {
+    transform: scale(1.25);
+}
+
+#player button:hover svg {
+    fill: white;
+    /* ホバー時にSVGの色を白に変更 */
+}
+
+/* タッチスクリーンの時にhoverを無効 */
+@media (hover: none) {
+    #player button:hover {
+        background-color: white;
+        color: black;
+    }
+
+    #player button:hover svg {
+        fill: black;
+    }
+}
+
+/* 一時停止ボタンを非表示 */
+#pause {
+    display: none;
+}
+
+/* プログレスバーのスタイル */
+.progress_bar_container {
+    width: 100%;
+    text-align: center;
+}
+
+#progress_bar {
+    width: 90%;
+    height: 5px;
+    cursor: pointer;
+}
+
+.inputRange {
+    appearance: none;
+    width: 200px;
+    height: 12px;
+    border: 1px solid #b0b0b0;
+    border-radius: 9999px;
+    background: linear-gradient(90deg, #2d3985 0%, #dddddd 0%);
+    cursor: pointer;
+}
+
+/* ツマミ：Chrome, Safari, Edge用 */
+.inputRange::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #2d3985;
+    box-shadow: none;
+}
+
+/* ツマミ：Firefox用 */
+.inputRange::-moz-range-thumb {
+    border: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #2d3985;
+    box-shadow: none;
+}
+
+/* 再生時間の表示 */
+.player_container {
+    color: #444444;
+    width: 100%;
+    padding: 15px 5%;
+    display: flex;
+    justify-content: space-between;
+}

@@ -10,15 +10,62 @@
     <meta http-equiv="default-style" content="./style.css">
     <link rel="shortcut icon" href="./favicon.ico" type="image/vnd.microsoft.icon" />
     <link rel="icon" href="./favicon.ico" type="image/vnd.microsoft.icon" />
-    <link rel="apple-touch-icon" href="/custom_icon.png">
+    <link rel="apple-touch-icon" href="./imgs/apple-touch-icon.png">
     <meta name="description" content="なんでもないや 音源">
     <meta name="author" content="Rio Gunawan">
+
+    <meta name="robots" content="noindex">
+    <meta name="robots" content="nofollow">
+
+    <meta name="og:url" content="https://www.arcody.com/rio/chorus">
+    <meta name="og:type" content="website">
+    <meta name="og:title" content="なんでもないや 音源">
+    <meta name="og:description" content="青高79期 1年5組 合唱「なんでもないや」のソプラノ・アルト・テノール・バス
+    やメトロノームなど、さまざま音源を自由にカスタマイズしながら聴くことができるサイト。">
+    <meta property="og:site_name" content="なんでもないや 音源">
+    <meta property="og:image" content="./imgs/icon.png">
+
+    <script src="./library/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
     <header>
         <h1>なんでもないや 音源</h1>
     </header>
+    <audio id="audio" controls>
+        <source src="./audios/全て.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+    <div id="bottom_menu">
+        <div class="progress_bar_container">
+            <input type="range" id="progress_bar" class="inputRange" name="progress" step="any" min="0" max="100"
+                value="0">
+        </div>
+        <div class="player_container">
+            <span id="current_time">0:00</span>
+            <div id="player">
+                <button id="rewind" title="前へ">
+                    <svg xmlns="http://www.w3.org/2000/svg">
+                        <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" />
+                    </svg>
+                </button>
+                <button id="play_and_pause" title="再生">
+                    <svg xmlns="http://www.w3.org/2000/svg" id="play">
+                        <path d="M8 5v14l11-7z" />
+                    </svg>
+                    <svg xmlns="http://www.w3.org/2000/svg" id="pause">
+                        <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
+                    </svg>
+                </button>
+                <button id="repeat">
+                    <svg xmlns="http://www.w3.org/2000/svg">
+                        <path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z" />
+                    </svg>
+                </button>
+            </div>
+            <span id="duration">0:00</span>
+        </div>
+    </div>
     <script src="main.js"></script>
 </body>
 
