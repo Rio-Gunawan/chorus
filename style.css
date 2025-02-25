@@ -60,14 +60,20 @@ h1 {
     transition: background 0.3s;
 }
 
-#player button:hover {
-    background-color: #2d3985 !important;
-    color: white;
-}
-
 button#play_and_pause {
     width: 60px;
     height: 60px;
+}
+
+button#play_and_pause:disabled {
+    background-color: #dddddd;
+    color: #b0b0b0;
+    cursor: not-allowed;
+    border: none;
+}
+
+button#play_and_pause:disabled svg {
+    fill: #b0b0b0;
 }
 
 #player button svg {
@@ -94,20 +100,23 @@ button#play_and_pause svg {
     transform: scale(1.25);
 }
 
-#player button:hover svg {
-    fill: white;
-    /* ホバー時にSVGの色を白に変更 */
-}
-
-/* タッチスクリーンの時にhoverを無効 */
-@media (hover: none) {
+@media (hover: hover) and (pointer: fine) {
     #player button:hover {
-        background-color: white;
-        color: black;
+        background-color: #2d3985 !important;
+        color: white;
+    }
+
+    #player button:disabled:hover {
+        background-color: #dddddd !important;
     }
 
     #player button:hover svg {
-        fill: black;
+        fill: white;
+        /* ホバー時にSVGの色を白に変更 */
+    }
+
+    #player button:disabled:hover svg {
+        fill: #b0b0b0 !important;
     }
 }
 
