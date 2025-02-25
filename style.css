@@ -432,3 +432,12 @@ select {
     display: flex;
     padding: 0 3%;
 }
+
+#volume_is_too_high {
+    display: none;
+}
+
+.info {
+    font-size: 0.7em;
+    padding: 0 3%;
+}

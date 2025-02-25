@@ -57,9 +57,11 @@
                 <div class="common_setting setting_panel">
                     <div class="volume">
                         <div class="range_label"><label for="volume">音量</label></div>
-                        <input type="range" id="volume" class="inputRange" name="volume" step="any" min="0" max="1"
-                            value="0.5">
-                        <input type="text" id="whole_volume_text" class="inputText" name="volume" value="100">
+                        <input type="range" id="volume" class="inputRange" name="volume" step="any" min="0" max="3"
+                            value="1">
+                        <input type="text" id="whole_volume_text" class="inputText" name="volume" value="100"> %
+                        <p class="alert_text" id="volume_is_too_high">イヤホン等を装着中の場合は、耳を痛めないようご注意ください。また、音割れが起こる可能性があります。
+                        </p>
                     </div>
                     <div class="preset">
                         <div class="range_label"><label for="preset">プリセットから選ぶ</label></div>
@@ -83,9 +85,9 @@
                     <div class="part setting_panel">
                         <h3><label for="soprano">メトロノーム</label></h3>
                         <div class="range_label"><label for="volume">音量</label></div>
-                        <input type="range" id="metronome" class="inputRange" name="soprano" step="any" min="0"
-                            max="100" value="100">
-                        <input type="text" id="metronome_volume_text" class="inputText" name="volume" value="100">
+                        <input type="range" id="metronome" class="inputRange" name="soprano" step="any" min="0" max="1"
+                            value="1">
+                        <input type="text" id="metronome_volume_text" class="inputText" name="volume" value="100"> %
                         <div class="buttons">
                             <button class="mute" title="ミュート">
                                 <svg xmlns="http://www.w3.org/2000/svg">
@@ -99,12 +101,13 @@
                             <button class="solo" title="ソロ">ソロ</button>
                         </div>
                     </div>
+                    <p class="info">※メトロノームの音源は、音量が他より少し大きくなっています。</p>
                     <div class="part setting_panel">
                         <h3><label for="soprano">ソプラノ</label></h3>
                         <div class="range_label"><label for="volume">音量</label></div>
-                        <input type="range" id="soprano" class="inputRange" name="soprano" step="any" min="0" max="100"
-                            value="100">
-                        <input type="text" id="soprano_volume_text" class="inputText" name="volume" value="100">
+                        <input type="range" id="soprano" class="inputRange" name="soprano" step="any" min="0" max="1"
+                            value="1">
+                        <input type="text" id="soprano_volume_text" class="inputText" name="volume" value="100"> %
                         <div class="buttons">
                             <button class="mute" title="ミュート">
                                 <svg xmlns="http://www.w3.org/2000/svg">
@@ -122,9 +125,9 @@
                     <div class="part setting_panel">
                         <h3><label for="alto">アルト</label></h3>
                         <div class="range_label"><label for="volume">音量</label></div>
-                        <input type="range" id="alto" class="inputRange" name="alto" step="any" min="0" max="100"
-                            value="100">
-                        <input type="text" id="alto_volume_text" class="inputText" name="volume" value="100">
+                        <input type="range" id="alto" class="inputRange" name="alto" step="any" min="0" max="1"
+                            value="1">
+                        <input type="text" id="alto_volume_text" class="inputText" name="volume" value="100"> %
                         <div class="buttons">
                             <button class="mute" title="ミュート">
                                 <svg xmlns="http://www.w3.org/2000/svg">
@@ -142,9 +145,9 @@
                     <div class="part setting_panel">
                         <h3><label for="tenor">テノール</label></h3>
                         <div class="range_label"><label for="volume">音量</label></div>
-                        <input type="range" id="tenor" class="inputRange" name="tenor" step="any" min="0" max="100"
-                            value="100">
-                        <input type="text" id="tenor_volume_text" class="inputText" name="volume" value="100">
+                        <input type="range" id="tenor" class="inputRange" name="tenor" step="any" min="0" max="1"
+                            value="1">
+                        <input type="text" id="tenor_volume_text" class="inputText" name="volume" value="100"> %
                         <div class="buttons">
                             <button class="mute" title="ミュート">
                                 <svg xmlns="http://www.w3.org/2000/svg">
@@ -162,9 +165,9 @@
                     <div class="part setting_panel">
                         <h3><label for="bass">バス</label></h3>
                         <div class="range_label"><label for="volume">音量</label></div>
-                        <input type="range" id="bass" class="inputRange" name="bass" step="any" min="0" max="100"
-                            value="100">
-                        <input type="text" id="bass_volume_text" class="inputText" name="volume" value="100">
+                        <input type="range" id="bass" class="inputRange" name="bass" step="any" min="0" max="1"
+                            value="1">
+                        <input type="text" id="bass_volume_text" class="inputText" name="volume" value="100"> %
                         <div class="buttons">
                             <button class="mute" title="ミュート">
                                 <svg xmlns="http://www.w3.org/2000/svg">

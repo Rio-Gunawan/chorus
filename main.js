@@ -5,6 +5,7 @@ const inactiveColor = "#dddddd";
 let isPlaying = false;
 let isRepeat = false;
 let isFirstPlayed = false;
+let volume = [1, 1, 1, 1, 1];
 let startTime = 0;
 let sources = [];
 
@@ -203,6 +204,14 @@ $(async function () {
         isRepeat = !isRepeat;
         $(this).toggleClass("active");
     });
+
+    // 音量が変更された時の処理
+    // $("#volume").on("input", function () {
+    //     const volume = $(this).val();
+    //     sources.forEach((source) => {
+    //         source.gainNode.gain.value = volume;
+    //     });
+    // });
 });
 
 function setRangeStyle(obj) {
@@ -223,5 +232,54 @@ $(function () {
     });
     $(".inputRange").on("input", function () {
         setRangeStyle(this);
+    });
+
+    // 音量のrangeとtextboxの連動
+    $("#volume").on("input", function () {
+        $("#whole_volume_text").val(Math.floor($(this).val() * 100));
+        if ($(this).val() > 1.01) {
+            $("#volume_is_too_high").show();
+        } else {
+            $("#volume_is_too_high").hide();
+        }
+    });
+    $("#whole_volume_text").on("input", function () {
+        $("#volume").val($(this).val() / 100);
+        $("#volume").trigger("input");
+    });
+    $("#metronome").on("input", function () {
+        $("#metronome_volume_text").val(Math.floor($(this).val() * 100));
+    });
+    $("#metronome_volume_text").on("input", function () {
+        $("#metronome").val($(this).val() / 100);
+        $("#metronome").trigger("input");
+    });
+    $("#soprano").on("input", function () {
+        $("#soprano_volume_text").val(Math.floor($(this).val() * 100));
+    });
+    $("#soprano_volume_text").on("input", function () {
+        $("#soprano").val($(this).val() / 100);
+        $("#soprano").trigger("input");
+    });
+    $("#alto").on("input", function () {
+        $("#alto_volume_text").val(Math.floor($(this).val() * 100));
+    });
+    $("#alto_volume_text").on("input", function () {
+        $("#alto").val($(this).val() / 100);
+        $("#alto").trigger("input");
+    });
+    $("#tenor").on("input", function () {
+        $("#tenor_volume_text").val(Math.floor($(this).val() * 100));
+    });
+    $("#tenor_volume_text").on("input", function () {
+        $("#tenor").val($(this).val() / 100);
+        $("#tenor").trigger("input");
+    });
+    $("#bass").on("input", function () {
+        $("#bass_volume_text").val(Math.floor($(this).val() * 100));
+    });
+    $("#bass_volume_text").on("input", function () {
+        $("#bass").val($(this).val() / 100);
+        $("#bass").trigger("input");
     });
 });
