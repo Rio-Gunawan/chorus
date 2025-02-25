@@ -246,7 +246,7 @@ $(async function () {
     $("#bass").on("input", function () {
         const volume = $(this).val();
         volumes["bass"] = volume;
-        gainNodes.bass.gain.value = volume * volumes["all"]
+        gainNodes.bass.gain.value = volume * volumes["all"];
     });
 });
 
