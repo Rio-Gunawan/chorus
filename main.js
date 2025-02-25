@@ -128,6 +128,10 @@ $(async function () {
     // 再生ボタンのdisabledを解除
     $("#play_and_pause").prop("disabled", false);
 
+    // ローディング画面を非表示にする
+    const loading = document.querySelector(".loading");
+    loading.classList.add("loaded");
+
     const progressbar = $("#progress_bar");
     const currentTime = $("#current_time");
     const durationTime = $("#duration_time");

@@ -26,6 +26,76 @@ h1 {
     color: white;
 }
 
+/* ローディング画面 */
+
+.loading {
+    /*ローディング画面の縦横幅を画面いっぱいになるように指定*/
+    width: 100vw;
+    height: 100vh;
+    /*ローディング画面の表示位置を固定*/
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    background: #555;
+    opacity: 0.8;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    /*ローディング画面を0.5秒かけて非表示にする*/
+    transition: all 0.5s linear;
+}
+
+/*ローディング画面を非表示にする*/
+.loading.loaded {
+    /*0.5秒かけてopacityを0にする*/
+    opacity: 0;
+    visibility: hidden;
+}
+
+.loading-text {
+    color: #FFF;
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.spinner {
+    display: block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 4px solid #FFF;
+    border-left-color: #222;
+    /* アニメーションを1秒かけて実行 */
+    animation: spinner-rotation 1s linear infinite;
+}
+
+/* アニメーションの設定 */
+@keyframes spinner-rotation {
+    0% {
+        transform: rotate(0);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.content {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content-text {
+    color: #333;
+}
+
 /* 再生ボタン等のあるブロックのスタイル */
 #bottom_menu {
     background-color: white;
