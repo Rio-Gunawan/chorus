@@ -26,6 +26,12 @@ h1 {
     color: white;
 }
 
+.alert_text {
+    color: red;
+    font-size: 0.8em;
+    padding: 5px 2%;
+}
+
 /* ============== ローディング画面 ============== */
 
 .loading {
