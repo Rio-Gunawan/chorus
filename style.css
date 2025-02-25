@@ -14,7 +14,7 @@
 
 body {
     font-size: min(18px, 4vw);
-    background-color: #e5e5e5;
+    background-color: #e0e0e0;
 }
 
 h1 {
@@ -26,7 +26,7 @@ h1 {
     color: white;
 }
 
-/* ローディング画面 */
+/* ============== ローディング画面 ============== */
 
 .loading {
     /*ローディング画面の縦横幅を画面いっぱいになるように指定*/
@@ -96,7 +96,7 @@ h1 {
     color: #333;
 }
 
-/* 再生ボタン等のあるブロックのスタイル */
+/* ============== 再生ボタン等のあるブロックのスタイル ============== */
 #bottom_menu {
     background-color: white;
     border-top: 1px solid #2d3985;
@@ -203,17 +203,14 @@ button#play_and_pause svg {
 
 #progress_bar {
     width: 90%;
-    height: 5px;
-    cursor: pointer;
 }
 
 .inputRange {
     appearance: none;
-    width: 200px;
-    height: 12px;
+    width: calc(90% - 3em);
+    height: 5px;
     border: 1px solid #b0b0b0;
-    border-radius: 9999px;
-    background: linear-gradient(90deg, #2d3985 0%, #dddddd 0%);
+    border-radius: 3px;
     cursor: pointer;
 }
 
@@ -245,4 +242,187 @@ button#play_and_pause svg {
     padding: 15px 5%;
     display: flex;
     justify-content: space-between;
+}
+
+/* ============== タブメニューのCSS ============== */
+.tab_wrap {
+    width: 100%;
+    margin-top: 10px;
+}
+
+input[type="radio"] {
+    display: none;
+}
+
+.tab_area label {
+    width: 30%;
+    display: inline-block;
+    padding: 10px 0;
+    color: #000;
+    background: #aaa;
+    text-align: center;
+    font-size: 0.8em;
+    cursor: pointer;
+    transition: ease 0.2s opacity;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .tab_area label:hover {
+        opacity: 0.5;
+    }
+}
+
+.tab_panel {
+    width: 100%;
+    opacity: 0;
+    padding: 10px 1vw;
+    display: none;
+}
+
+.panel_area {
+    background: #f5f5f5;
+}
+
+#tab1:checked~.tab_area .tab1_label {
+    background: #f5f5f5;
+    color: #000;
+}
+
+#tab1:checked~.panel_area #panel1 {
+    display: block;
+    animation: tabAnim ease 0.6s forwards;
+    -ms-animation: tabAnim ease 0.6s forwards;
+}
+
+#tab2:checked~.tab_area .tab2_label {
+    background: #f5f5f5;
+    color: #000;
+}
+
+#tab2:checked~.panel_area #panel2 {
+    display: block;
+    animation: tabAnim ease 0.6s forwards;
+    -ms-animation: tabAnim ease 0.6s forwards;
+}
+
+#tab3:checked~.tab_area .tab3_label {
+    background: #f5f5f5;
+    color: #000;
+}
+
+#tab3:checked~.panel_area #panel3 {
+    display: block;
+    animation: tabAnim ease 0.6s forwards;
+    -ms-animation: tabAnim ease 0.6s forwards;
+}
+
+@keyframes tabAnim {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+/* ============== 音声の設定のCSS ============== */
+.setting_panel {
+    padding: 10px 3vw;
+    margin: 10px;
+    background-color: white;
+    border-radius: 10px;
+    border: 1px solid #c5c5c5;
+    text-align: center;
+}
+
+h2 {
+    margin: 0 3%;
+    font-size: 1.2em;
+}
+
+h3 {
+    text-align: left;
+    margin: 5px 2%;
+    font-size: 1em;
+}
+
+input[type="text"] {
+    width: 3em;
+    padding: 5px;
+    border: 1px solid #b0b0b0;
+    border-radius: 5px;
+}
+
+select {
+    width: 90%;
+    padding: 5px;
+    margin: 5px 0;
+    border: 1px solid #b0b0b0;
+    background-color: white;
+    color: black;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.range_label {
+    text-align: left;
+    padding-left: 1em;
+}
+
+.mute {
+    background-color: white;
+    border: 1px solid #2d3985;
+    border-radius: 50%;
+
+    width: 30px;
+    height: 30px;
+    margin: 0 5px;
+    cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.3s;
+}
+.mute svg {
+    width: 25px;
+    height: 25px;
+    fill: black;
+    /* SVGの色を黒に設定 */
+    transition: fill 0.3s;
+    transform: scale(0.6);
+}
+
+.solo {
+    background-color: white;
+    color: black;
+    border: 1px solid #2d3985;
+    border-radius: 10px;
+
+    height: 30px;
+    margin: 0 5px;
+    padding: 0 10px;
+    cursor: pointer;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background 0.3s;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .setting_panel button:hover {
+        background-color: #2d3985;
+        color: white;
+    }
+
+    .setting_panel button:hover svg {
+        fill: white;
+    }
+}
+
+.setting_panel .buttons {
+    display: flex;
+    padding: 0 3%;
 }

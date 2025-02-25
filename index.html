@@ -34,9 +34,163 @@
         <p class="loading-text">Loading...</p>
         <div class="spinner"></div>
     </div>
+
     <header>
         <h1>なんでもないや 音源</h1>
     </header>
+
+    <div class="tab_wrap">
+        <input id="tab1" type="radio" name="tab_btn" checked>
+        <input id="tab2" type="radio" name="tab_btn">
+        <input id="tab3" type="radio" name="tab_btn">
+
+        <div class="tab_area">
+            <label class="tab1_label" for="tab1">音声</label>
+            <label class="tab2_label" for="tab2">歌詞</label>
+            <label class="tab3_label" for="tab3">楽譜</label>
+        </div>
+        <div class="panel_area">
+            <div id="panel1" class="tab_panel">
+                <!-- 音声のパネル -->
+                <h2>全パート共通の設定</h2>
+                <div class="common_setting setting_panel">
+                    <div class="volume">
+                        <div class="range_label"><label for="volume">音量</label></div>
+                        <input type="range" id="volume" class="inputRange" name="volume" step="any" min="0" max="1"
+                            value="0.5">
+                        <input type="text" id="whole_volume_text" class="inputText" name="volume" value="100">
+                    </div>
+                    <div class="preset">
+                        <div class="range_label"><label for="preset">プリセットから選ぶ</label></div>
+                        <select id="preset" class="inputSelect">
+                            <option value="0">なし</option>
+                            <option value="1" selected>全パート</option>
+                            <option value="2">メトロノームのみ</option>
+                            <option value="3">ソプラノのみ</option>
+                            <option value="4">アルトのみ</option>
+                            <option value="5">テノールのみ</option>
+                            <option value="6">バスのみ</option>
+                            <option value="7">ソプラノ強め</option>
+                            <option value="8">アルト強め</option>
+                            <option value="9">テノール強め</option>
+                            <option value="10">バス強め</option>
+                        </select>
+                    </div>
+                </div>
+                <h2>各パート個別での設定</h2>
+                <div class="part_setting">
+                    <div class="part setting_panel">
+                        <h3><label for="soprano">メトロノーム</label></h3>
+                        <div class="range_label"><label for="volume">音量</label></div>
+                        <input type="range" id="metronome" class="inputRange" name="soprano" step="any" min="0"
+                            max="100" value="100">
+                        <input type="text" id="metronome_volume_text" class="inputText" name="volume" value="100">
+                        <div class="buttons">
+                            <button class="mute" title="ミュート">
+                                <svg xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0 0h24v24H0z" fill="none" />
+                                    <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0
+                                    .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86
+                                    5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31
+                                    2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
+                                </svg>
+                            </button>
+                            <button class="solo" title="ソロ">ソロ</button>
+                        </div>
+                    </div>
+                    <div class="part setting_panel">
+                        <h3><label for="soprano">ソプラノ</label></h3>
+                        <div class="range_label"><label for="volume">音量</label></div>
+                        <input type="range" id="soprano" class="inputRange" name="soprano" step="any" min="0" max="100"
+                            value="100">
+                        <input type="text" id="soprano_volume_text" class="inputText" name="volume" value="100">
+                        <div class="buttons">
+                            <button class="mute" title="ミュート">
+                                <svg xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                        d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0
+                                                            .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86
+                                                            5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31
+                                                            2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
+                                </svg>
+                            </button>
+                            <button class="solo" title="ソロ">ソロ</button>
+                        </div>
+                    </div>
+                    <div class="part setting_panel">
+                        <h3><label for="alto">アルト</label></h3>
+                        <div class="range_label"><label for="volume">音量</label></div>
+                        <input type="range" id="alto" class="inputRange" name="alto" step="any" min="0" max="100"
+                            value="100">
+                        <input type="text" id="alto_volume_text" class="inputText" name="volume" value="100">
+                        <div class="buttons">
+                            <button class="mute" title="ミュート">
+                                <svg xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                        d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0
+                                                            .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86
+                                                            5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31
+                                                            2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
+                                </svg>
+                            </button>
+                            <button class="solo" title="ソロ">ソロ</button>
+                        </div>
+                    </div>
+                    <div class="part setting_panel">
+                        <h3><label for="tenor">テノール</label></h3>
+                        <div class="range_label"><label for="volume">音量</label></div>
+                        <input type="range" id="tenor" class="inputRange" name="tenor" step="any" min="0" max="100"
+                            value="100">
+                        <input type="text" id="tenor_volume_text" class="inputText" name="volume" value="100">
+                        <div class="buttons">
+                            <button class="mute" title="ミュート">
+                                <svg xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                        d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0
+                                                            .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86
+                                                            5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31
+                                                            2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
+                                </svg>
+                            </button>
+                            <button class="solo" title="ソロ">ソロ</button>
+                        </div>
+                    </div>
+                    <div class="part setting_panel">
+                        <h3><label for="bass">バス</label></h3>
+                        <div class="range_label"><label for="volume">音量</label></div>
+                        <input type="range" id="bass" class="inputRange" name="bass" step="any" min="0" max="100"
+                            value="100">
+                        <input type="text" id="bass_volume_text" class="inputText" name="volume" value="100">
+                        <div class="buttons">
+                            <button class="mute" title="ミュート">
+                                <svg xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M0 0h24v24H0z" fill="none" />
+                                    <path
+                                        d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0
+                                                            .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86
+                                                            5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31
+                                                            2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
+                                </svg>
+                            </button>
+                            <button class="solo" title="ソロ">ソロ</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="panel2" class="tab_panel">
+                <p>歌詞</p>
+            </div>
+            <div id="panel3" class="tab_panel">
+                <p>楽譜</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="blank"></div>
+
     <div id="bottom_menu">
         <div class="progress_bar_container">
             <input type="range" id="progress_bar" class="inputRange" name="progress" step="any" min="0" max="100"

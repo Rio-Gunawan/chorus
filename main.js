@@ -168,7 +168,7 @@ $(async function () {
     }, 100);
 
     // プログレスバーがクリックされた時の動作
-    $(".inputRange").on("input", function () {
+    $("#progress_bar").on("input", function () {
         setRangeStyle(this);
         const newTime = audioBuffers.metronome.duration * (this.value / 100);
         startTime = audioContext.currentTime - newTime;
@@ -215,3 +215,13 @@ function convertTimeFormat(time) {
     const seconds = Math.floor(time % 60);
     return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
 }
+
+$(function () {
+    $(".blank").css("height", $("#bottom_menu").height());
+    Object.values($(".inputRange")).forEach((input) => {
+        setRangeStyle(input);
+    });
+    $(".inputRange").on("input", function () {
+        setRangeStyle(this);
+    });
+});
