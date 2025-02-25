@@ -5,9 +5,10 @@ const inactiveColor = "#dddddd";
 let isPlaying = false;
 let isRepeat = false;
 let isFirstPlayed = false;
-let volume = [1, 1, 1, 1, 1];
+let volumes = { "all": 1, "metronome": 1, "soprano": 1, "alto": 1, "tenor": 1, "bass": 1 };
 let startTime = 0;
 let sources = [];
+let gainNodes = {};
 
 // Web Audio API用のコンテキスト
 let audioContext = null;
@@ -67,12 +68,14 @@ const playSound = function () {
             audioContext.resume();
         }
         startTime = audioContext.currentTime;
-        sources = Object.values(audioBuffers).map(part => {
+        sources = Object.entries(audioBuffers).map(([name, buffer]) => {
             let source = audioContext.createBufferSource();    // 再生用のノードを作成
-            source.buffer = part;    // オーディオバッファをノードに設定
-            source.connect(audioContext.destination);    // 出力先設定
+            let gainNode = audioContext.createGain();          // 個別のGainNodeを作成
+            source.buffer = buffer;    // オーディオバッファをノードに設定
+            source.connect(gainNode).connect(audioContext.destination);    // 出力先設定
             source.start();    // 再生
             source.onended = handleEnded; // 再生終了時の処理を設定
+            gainNodes[name] = gainNode;   // GainNodeを保存
             return source;
         });
         isFirstPlayed = true;
@@ -100,12 +103,14 @@ const handleEnded = function () {
     }
     if (isRepeat) {
         startTime = audioContext.currentTime;
-        sources = Object.values(audioBuffers).map(part => {
+        sources = Object.entries(audioBuffers).map(([name, buffer]) => {
             let source = audioContext.createBufferSource();    // 再生用のノードを作成
-            source.buffer = part;    // オーディオバッファをノードに設定
-            source.connect(audioContext.destination);    // 出力先設定
+            let gainNode = audioContext.createGain();          // 個別のGainNodeを作成
+            source.buffer = buffer;    // オーディオバッファをノードに設定
+            source.connect(gainNode).connect(audioContext.destination);    // 出力先設定
             source.start();    // 再生
             source.onended = handleEnded; // 再生終了時の処理を設定
+            gainNodes[name] = gainNode;   // GainNodeを保存
             return source;
         });
     } else {
@@ -178,7 +183,7 @@ $(async function () {
             source.stop();
             let newSource = audioContext.createBufferSource();
             newSource.buffer = source.buffer;
-            newSource.connect(audioContext.destination);
+            newSource.connect(gainNodes[Object.keys(audioBuffers)[index]]).connect(audioContext.destination);
             newSource.start(0, newTime);
             newSource.onended = handleEnded; // 再生終了時の処理を設定
             sources[index] = newSource;
@@ -192,7 +197,7 @@ $(async function () {
             startTime = audioContext.currentTime;
             let newSource = audioContext.createBufferSource();
             newSource.buffer = source.buffer;
-            newSource.connect(audioContext.destination);
+            newSource.connect(gainNodes[Object.keys(audioBuffers)[index]]).connect(audioContext.destination);
             newSource.start();
             newSource.onended = handleEnded; // 再生終了時の処理を設定
             sources[index] = newSource;
@@ -206,12 +211,43 @@ $(async function () {
     });
 
     // 音量が変更された時の処理
-    // $("#volume").on("input", function () {
-    //     const volume = $(this).val();
-    //     sources.forEach((source) => {
-    //         source.gainNode.gain.value = volume;
-    //     });
-    // });
+    $("#volume").on("input", function () {
+        const volume = $(this).val();
+        volumes["all"] = volume;
+        Object.keys(gainNodes).forEach(gainNodeKey => {
+            gainNodes[gainNodeKey].gain.value = volumes[gainNodeKey] * volume;
+        });
+    });
+
+    $("#metronome").on("input", function () {
+        const volume = $(this).val();
+        volumes["metronome"] = volume;
+        gainNodes.metronome.gain.value = volume * volumes["all"];
+    });
+
+    $("#soprano").on("input", function () {
+        const volume = $(this).val();
+        volumes["soprano"] = volume;
+        gainNodes.soprano.gain.value = volume * volumes["all"];
+    });
+
+    $("#alto").on("input", function () {
+        const volume = $(this).val();
+        volumes["alto"] = volume;
+        gainNodes.alto.gain.value = volume * volumes["all"];
+    });
+
+    $("#tenor").on("input", function () {
+        const volume = $(this).val();
+        volumes["tenor"] = volume;
+        gainNodes.tenor.gain.value = volume * volumes["all"];
+    });
+
+    $("#bass").on("input", function () {
+        const volume = $(this).val();
+        volumes["bass"] = volume;
+        gainNodes.bass.gain.value = volume * volumes["all"]
+    });
 });
 
 function setRangeStyle(obj) {
