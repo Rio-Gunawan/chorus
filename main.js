@@ -82,18 +82,20 @@ const playSound = function () {
         if (audioContext.state === "suspended") {
             audioContext.resume();
         }
-        startTime = audioContext.currentTime;
+        const newTime = audioBuffers.metronome.duration * ($("#progress_bar").val() / 100);
+        startTime = audioContext.currentTime - newTime;
+
         sources = Object.entries(audioBuffers).map(([name, buffer]) => {
             let source = audioContext.createBufferSource();    // 再生用のノードを作成
             let gainNode = audioContext.createGain();          // 個別のGainNodeを作成
             source.buffer = buffer;    // オーディオバッファをノードに設定
             source.connect(gainNode).connect(audioContext.destination);    // 出力先設定
-            source.start();    // 再生
+            source.start(0, newTime);    // 再生
             source.onended = handleEnded; // 再生終了時の処理を設定
             gainNodes[name] = gainNode;   // GainNodeを保存
-            current_lyrics_position = 0;
+            current_lyrics_position = getCurrentLyricsPosition(newTime);
             $(".lyrics_row").removeClass("active");
-            current_lyrics_section = 0;
+            current_lyrics_section = getCurrentLyricsPosition(newTime);
             $(".block").removeClass("active");
             $('.lyrics').animate({ scrollTop: 0 }, scroll_speed, 'swing');
             return source;
