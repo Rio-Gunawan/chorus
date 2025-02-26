@@ -8,3 +8,6 @@ package.json
 
 # ESLint関連のファイル
 eslint.config.mjs
+
+# vscodeの設定ファイルを無視
+.vscode

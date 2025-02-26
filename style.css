@@ -292,7 +292,7 @@ input[type="radio"] {
 .tab_panel {
     width: 100%;
     opacity: 0;
-    padding: 10px 1vw;
+    padding: 10px 0;
     display: none;
 }
 
@@ -493,4 +493,25 @@ button.solo.active {
 .info {
     font-size: 0.7em;
     padding: 0 3%;
+}
+
+/* ============== footerのCSS ============== */
+footer {
+    padding: 10px 5%;
+    background-color: #5c5c5c;
+    color: white;
+    font-size: 0.8em;
+}
+
+footer li {
+    list-style: none;
+    margin: 0 10px;
+}
+
+footer a {
+    color: white;
+}
+
+footer p {
+    margin: 5px 0;
 }
