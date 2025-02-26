@@ -506,6 +506,53 @@ button.solo.active {
     padding: 0 3%;
 }
 
+/* ピアノかボカロかを選択する画面 */
+
+.instrument_type_container {
+    border: 1px solid #2d3985;
+    border-radius: 5px;
+    margin: 5px 5%;
+    display: flex;
+}
+
+.instrument_type_label {
+    display: flex;
+    width: 50%;
+    padding: 5px 0;
+    justify-content: center;
+    cursor: pointer;
+    transition: 0.3s background;
+}
+
+.instrument_type_label:has(input[type="radio"]:checked) {
+    background: #2d3985;
+    /* マウス選択時の背景色を指定する */
+    color: #ffffff;
+    /* マウス選択時のフォント色を指定する */
+}
+
+.instrument_type_label:has(input[type="checkbox"]:checked) {
+    background: #2d3985;
+    /* マウス選択時の背景色を指定する */
+    color: #ffffff;
+    /* マウス選択時のフォント色を指定する */
+}
+
+input[type="checkbox"].instrument_type {
+    display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .instrument_type_label:hover {
+        background-color: #E2EDF9;
+        /* マウスオーバー時の背景色を指定する */
+    }
+}
+
+.type {
+    margin: 10px 0;
+}
+
 /* ============== footerのCSS ============== */
 footer {
     padding: 10px 5%;

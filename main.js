@@ -775,4 +775,58 @@ $(function () {
         $("#bass").val($(this).val() / 100);
         $("#bass").trigger("input");
     });
+
+    $('input[name="instrument_type_soprano"]').on("change", function () {
+        $("#vocal").prop("checked", false);
+        $("#piano").prop("checked", false);
+        if (!$('#vocal_soprano').prop('checked') && !$('#piano_soprano').prop('checked')) {
+            $(this).prop('checked', true);
+        }
+    });
+
+    $('input[name="instrument_type_alto"]').on("change", function () {
+        $("#vocal").prop("checked", false);
+        $("#piano").prop("checked", false);
+        if (!$('#vocal_alto').prop('checked') && !$('#piano_alto').prop('checked')) {
+            $(this).prop('checked', true);
+        }
+    });
+
+    $('input[name="instrument_type_tenor"]').on("change", function () {
+        $("#vocal").prop("checked", false);
+        $("#piano").prop("checked", false);
+        if (!$('#vocal_tenor').prop('checked') && !$('#piano_tenor').prop('checked')) {
+            $(this).prop('checked', true);
+        }
+    });
+
+    $('input[name="instrument_type_bass"]').on("change", function () {
+        $("#vocal").prop("checked", false);
+        $("#piano").prop("checked", false);
+        if (!$('#vocal_bass').prop('checked') && !$('#piano_bass').prop('checked')) {
+            $(this).prop('checked', true);
+        }
+    });
+
+    $('input[name="instrument_type"]').on("change", function () {
+        if ($('#vocal').prop('checked')) {
+            $('input[name="instrument_type_soprano"]').prop('checked', false);
+            $('input[name="instrument_type_alto"]').prop('checked', false);
+            $('input[name="instrument_type_tenor"]').prop('checked', false);
+            $('input[name="instrument_type_bass"]').prop('checked', false);
+            $('#vocal_soprano').prop('checked', true);
+            $('#vocal_alto').prop('checked', true);
+            $('#vocal_tenor').prop('checked', true);
+            $('#vocal_bass').prop('checked', true);
+        } else if ($('#piano').prop('checked')) {
+            $('input[name="instrument_type_soprano"]').prop('checked', false);
+            $('input[name="instrument_type_alto"]').prop('checked', false);
+            $('input[name="instrument_type_tenor"]').prop('checked', false);
+            $('input[name="instrument_type_bass"]').prop('checked', false);
+            $('#piano_soprano').prop('checked', true);
+            $('#piano_alto').prop('checked', true);
+            $('#piano_tenor').prop('checked', true);
+            $('#piano_bass').prop('checked', true);
+        }
+    });
 });
