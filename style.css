@@ -524,7 +524,11 @@ footer a {
 }
 
 footer p {
-    margin: 5px 0;
+    margin: 7px 0;
+}
+
+footer li {
+    margin: 3px 0;
 }
 
 /* =============== 歌詞のCSS =============== */
