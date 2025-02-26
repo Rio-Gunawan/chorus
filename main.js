@@ -95,6 +95,7 @@ const playSound = function () {
             $(".lyrics_row").removeClass("active");
             current_lyrics_section = 0;
             $(".block").removeClass("active");
+            $('.lyrics').animate({ scrollTop: 0 }, scroll_speed, 'swing');
             return source;
         });
 
@@ -137,6 +138,7 @@ const handleEnded = function () {
             $(".lyrics_row").removeClass("active");
             current_lyrics_section = 0;
             $(".block").removeClass("active");
+            $('.lyrics').animate({ scrollTop: 0 }, scroll_speed, 'swing');
             source.onended = handleEnded; // 再生終了時の処理を設定
             gainNodes[name] = gainNode;   // GainNodeを保存
             return source;
@@ -260,7 +262,7 @@ $(async function () {
                     $(`#${current_lyrics_section}_sec`).addClass("active");
                     current_lyrics_section++;
                 }
-                if (current_lyrics_position >= 2) {
+                if (current_lyrics_position >= 2 && current_lyrics_position <= 42) {
                     position = Math.round(target.position().top - scroll_adjust + $('.lyrics').scrollTop());
                     $('.lyrics').animate({ scrollTop: position }, scroll_speed, 'swing');
                 }
@@ -273,6 +275,46 @@ $(async function () {
     $("#progress_bar").on("input", function () {
         setRangeStyle(this);
         const newTime = audioBuffers.metronome.duration * (this.value / 100);
+        startTime = audioContext.currentTime - newTime;
+        currentTime.text(convertTimeFormat(newTime));
+        sources.forEach((source, index) => {
+            source.stop();
+            let newSource = audioContext.createBufferSource();
+            newSource.buffer = source.buffer;
+            newSource.connect(gainNodes[Object.keys(audioBuffers)[index]]).connect(audioContext.destination);
+            newSource.start(0, newTime);
+            newSource.onended = handleEnded; // 再生終了時の処理を設定
+            sources[index] = newSource;
+            current_lyrics_position = getCurrentLyricsPosition(newTime);
+            $(".lyrics_row").removeClass("active");
+            current_lyrics_section = getCurrentLyricsSection(newTime);
+            $(".block").removeClass("active");
+        });
+    });
+
+    // 歌詞がクリックされた時の動作
+    $(".lyrics_row").on("click", function () {
+        const newTime = lyrics_time[$(this).attr("id")];
+        startTime = audioContext.currentTime - newTime;
+        currentTime.text(convertTimeFormat(newTime));
+        sources.forEach((source, index) => {
+            source.stop();
+            let newSource = audioContext.createBufferSource();
+            newSource.buffer = source.buffer;
+            newSource.connect(gainNodes[Object.keys(audioBuffers)[index]]).connect(audioContext.destination);
+            newSource.start(0, newTime);
+            newSource.onended = handleEnded; // 再生終了時の処理を設定
+            sources[index] = newSource;
+            current_lyrics_position = getCurrentLyricsPosition(newTime);
+            $(".lyrics_row").removeClass("active");
+            current_lyrics_section = getCurrentLyricsSection(newTime);
+            $(".block").removeClass("active");
+        });
+    });
+
+    // 歌詞セクションがクリックされた時の動作
+    $(".block").on("click", function () {
+        const newTime = lyrics_section_time[$(this).attr("id").replace("_sec", "")];
         startTime = audioContext.currentTime - newTime;
         currentTime.text(convertTimeFormat(newTime));
         sources.forEach((source, index) => {
@@ -303,6 +345,7 @@ $(async function () {
             $(".lyrics_row").removeClass("active");
             current_lyrics_section = 0;
             $(".block").removeClass("active");
+            $('.lyrics').animate({ scrollTop: 0 }, scroll_speed, 'swing');
             newSource.onended = handleEnded; // 再生終了時の処理を設定
             sources[index] = newSource;
         });

@@ -418,6 +418,7 @@ input[type="checkbox"] {
     align-items: center;
     transition: background 0.3s;
 }
+
 .mute svg {
     width: 25px;
     height: 25px;
@@ -554,6 +555,7 @@ footer p {
     color: #999;
     border: 2px solid #999;
     font-size: 0.8em;
+    cursor: pointer;
 }
 
 .block.active {
@@ -564,6 +566,7 @@ footer p {
 .lyrics_row {
     display: flex;
     margin: 10px 0;
+    cursor: pointer;
 }
 
 .lyrics_row.active {
