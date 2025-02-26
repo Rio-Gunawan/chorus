@@ -6,7 +6,9 @@ let isPlaying = false;
 let isRepeat = false;
 let isFirstPlayed = false;
 let volumes = { "all": 1, "metronome": 1, "soprano": 1, "alto": 1, "tenor": 1, "bass": 1 };
+let mute = { "metronome": false, "soprano": false, "alto": false, "tenor": false, "bass": false };
 let solo = { "metronome": false, "soprano": false, "alto": false, "tenor": false, "bass": false };
+let isSolo = false;
 let startTime = 0;
 let sources = [];
 let gainNodes = {};
@@ -131,6 +133,30 @@ const handleEnded = function () {
     }
 };
 
+// ソロを解除する関数
+const releaseSolo = function () {
+    if (isSolo) {
+        Object.keys(solo).forEach(key => {
+            const targetVolume = $(`#${key}`);
+            solo[key] = false;
+            if (mute[key]) {
+                targetVolume.val(0);
+            } else {
+                if (targetVolume.data("prev") === undefined) {
+                    targetVolume.val(1);
+                } else {
+                    targetVolume.val(targetVolume.data("prev"));
+                }
+            }
+            targetVolume.trigger("input");
+            $(`#${key}_solo`).removeClass("active");
+            $(`#${key}_mute`).attr("disabled", false);
+            $(`#${key}`).attr("disabled", false);
+            $(`#${key}_volume_text`).attr("disabled", false);
+        });
+    }
+};
+
 $(async function () {
     // Web Audio API用音声コンテキスト生成
     audioContext = new AudioContext();
@@ -239,7 +265,11 @@ $(async function () {
         if (volume == 0) {
             $("#metronome_mute").addClass("active");
             $(this).parents('.setting_panel').addClass("muted");
+            if (!isSolo) {
+                mute["metronome"] = true;
+            }
         } else if (volumes["metronome"] == 0) {
+            mute["metronome"] = false;
             $("#metronome_mute").removeClass("active");
             $(this).parents('.setting_panel').removeClass("muted");
         }
@@ -254,7 +284,11 @@ $(async function () {
         if (volume == 0) {
             $("#soprano_mute").addClass("active");
             $(this).parents('.setting_panel').addClass("muted");
-        } else if (volumes["metronome"] == 0) {
+            if (!isSolo) {
+                mute["soprano"] = true;
+            }
+        } else if (volumes["soprano"] == 0) {
+            mute["soprano"] = false;
             $("#soprano_mute").removeClass("active");
             $(this).parents('.setting_panel').removeClass("muted");
         }
@@ -269,7 +303,11 @@ $(async function () {
         if (volume == 0) {
             $("#alto_mute").addClass("active");
             $(this).parents('.setting_panel').addClass("muted");
-        } else {
+            if (!isSolo) {
+                mute["alto"] = true;
+            }
+        } else if (volumes["alto"] == 0) {
+            mute["alto"] = false;
             $("#alto_mute").removeClass("active");
             $(this).parents('.setting_panel').removeClass("muted");
         }
@@ -284,7 +322,11 @@ $(async function () {
         if (volume == 0) {
             $("#tenor_mute").addClass("active");
             $(this).parents('.setting_panel').addClass("muted");
-        } else {
+            if (!isSolo) {
+                mute["tenor"] = true;
+            }
+        } else if (volumes["tenor"] == 0) {
+            mute["tenor"] = false;
             $("#tenor_mute").removeClass("active");
             $(this).parents('.setting_panel').removeClass("muted");
         }
@@ -299,7 +341,11 @@ $(async function () {
         if (volume == 0) {
             $("#bass_mute").addClass("active");
             $(this).parents('.setting_panel').addClass("muted");
-        } else {
+            if (!isSolo) {
+                mute["bass"] = true;
+            }
+        } else if (volumes["bass"] == 0) {
+            mute["bass"] = false;
             $("#bass_mute").removeClass("active");
             $(this).parents('.setting_panel').removeClass("muted");
         }
@@ -315,6 +361,7 @@ $(async function () {
         const targetVolume = $(`#${target}`);
         $(this).toggleClass("active");
         $(this).parents('.setting_panel').toggleClass("muted");
+        mute[target] = !mute[target];
         if (targetVolume.val() === "0") {
             if (targetVolume.data("prev") === undefined) {
                 targetVolume.val(1);
@@ -334,22 +381,11 @@ $(async function () {
         solo[target] = !solo[target];
         $(this).toggleClass("active");
         if (!(solo["metronome"] || solo["soprano"] || solo["alto"] || solo["tenor"] || solo["bass"])) {
-            Object.keys(solo).forEach(key => {
-                const targetVolume = $(`#${key}`);
-                if (targetVolume.data("prev") === undefined) {
-                    targetVolume.val(1);
-                } else {
-                    targetVolume.val(targetVolume.data("prev"));
-                }
-                targetVolume.trigger("input");
-                $(`#${key}_mute`).removeClass("active");
-                $(`#${key}_mute`).attr("disabled", false);
-                $(`#${key}`).attr("disabled", false);
-                $(`#${key}_volume_text`).attr("disabled", false);
-                $(`#${key}_mute`).parents('.setting_panel').removeClass("muted");
-            });
+            isSolo = false;
+            releaseSolo();
             return;
         }
+        isSolo = true;
         Object.keys(solo).forEach(key => {
             const targetVolume = $(`#${key}`);
             if (!solo[key]) {
@@ -381,6 +417,153 @@ $(async function () {
                 $(`#${key}_mute`).parents('.setting_panel').removeClass("muted");
             }
         });
+    });
+
+    // プリセットが選択された時の動作
+    $("#preset").on("change", function () {
+        const preset = $(this).val();
+        if (preset != 0) {
+            releaseSolo();
+        }
+        if (preset != 2) {
+            $("#with_metronome").attr("disabled", false);
+        }
+        switch (preset) {
+            case "1":
+                $("#soprano").val(1);
+                $("#soprano").trigger("input");
+                $("#alto").val(1);
+                $("#alto").trigger("input");
+                $("#tenor").val(1);
+                $("#tenor").trigger("input");
+                $("#bass").val(1);
+                $("#bass").trigger("input");
+                break;
+            case "2":
+                // メトロノーム入りのチェックボックスを無効化
+                $("#with_metronome").attr('checked', true).prop('checked', true).attr("disabled", true);
+
+                $("#metronome").val(1);
+                $("#metronome").trigger("input");
+                $("#soprano").val(0);
+                $("#soprano").trigger("input");
+                $("#alto").val(0);
+                $("#alto").trigger("input");
+                $("#tenor").val(0);
+                $("#tenor").trigger("input");
+                $("#bass").val(0);
+                $("#bass").trigger("input");
+                break;
+            case "3":
+                $("#soprano").val(1);
+                $("#soprano").trigger("input");
+                $("#alto").val(0);
+                $("#alto").trigger("input");
+                $("#tenor").val(0);
+                $("#tenor").trigger("input");
+                $("#bass").val(0);
+                $("#bass").trigger("input");
+                break;
+            case "4":
+                $("#soprano").val(0);
+                $("#soprano").trigger("input");
+                $("#alto").val(1);
+                $("#alto").trigger("input");
+                $("#tenor").val(0);
+                $("#tenor").trigger("input");
+                $("#bass").val(0);
+                $("#bass").trigger("input");
+                break;
+            case "5":
+                $("#soprano").val(0);
+                $("#soprano").trigger("input");
+                $("#alto").val(0);
+                $("#alto").trigger("input");
+                $("#tenor").val(1);
+                $("#tenor").trigger("input");
+                $("#bass").val(0);
+                $("#bass").trigger("input");
+                break;
+            case "6":
+                $("#soprano").val(0);
+                $("#soprano").trigger("input");
+                $("#alto").val(0);
+                $("#alto").trigger("input");
+                $("#tenor").val(0);
+                $("#tenor").trigger("input");
+                $("#bass").val(1);
+                $("#bass").trigger("input");
+                break;
+            case "7":
+                if ($("#with_metronome").prop("checked")) {
+                    $("#metronome").val(0.5);
+                    $("#metronome").trigger("input");
+                }
+                $("#soprano").val(1);
+                $("#soprano").trigger("input");
+                $("#alto").val(0.2);
+                $("#alto").trigger("input");
+                $("#tenor").val(0.2);
+                $("#tenor").trigger("input");
+                $("#bass").val(0.2);
+                $("#bass").trigger("input");
+                break;
+            case "8":
+                if ($("#with_metronome").prop("checked")) {
+                    $("#metronome").val(0.5);
+                    $("#metronome").trigger("input");
+                }
+                $("#soprano").val(0.2);
+                $("#soprano").trigger("input");
+                $("#alto").val(1);
+                $("#alto").trigger("input");
+                $("#tenor").val(0.2);
+                $("#tenor").trigger("input");
+                $("#bass").val(0.2);
+                $("#bass").trigger("input");
+                break;
+            case "9":
+                if ($("#with_metronome").prop("checked")) {
+                    $("#metronome").val(0.5);
+                    $("#metronome").trigger("input");
+                }
+                $("#soprano").val(0.2);
+                $("#soprano").trigger("input");
+                $("#alto").val(0.2);
+                $("#alto").trigger("input");
+                $("#tenor").val(1);
+                $("#tenor").trigger("input");
+                $("#bass").val(0.2);
+                $("#bass").trigger("input");
+                break;
+            case "10":
+                if ($("#with_metronome").prop("checked")) {
+                    $("#metronome").val(0.5);
+                    $("#metronome").trigger("input");
+                }
+                $("#soprano").val(0.2);
+                $("#soprano").trigger("input");
+                $("#alto").val(0.2);
+                $("#alto").trigger("input");
+                $("#tenor").val(0.2);
+                $("#tenor").trigger("input");
+                $("#bass").val(1);
+                $("#bass").trigger("input");
+                break;
+            default:
+                break;
+        }
+    });
+    // メトロノーム入りのチェックが入った時の動作
+    $("#with_metronome").on("change", function () {
+        releaseSolo();
+        if ($(this).prop("checked")) {
+            $("#metronome").val(1);
+            $("#metronome").trigger("input");
+        } else {
+            $("#metronome").val(0);
+            $("#metronome").trigger("input");
+        }
     });
 });
 

@@ -388,6 +388,16 @@ select {
     cursor: pointer;
 }
 
+input[type="checkbox"] {
+    margin-right: 2%;
+    cursor: pointer;
+}
+
+.label_for_checkbox {
+    text-align: left;
+    cursor: pointer;
+}
+
 .range_label {
     text-align: left;
     padding-left: 1em;
