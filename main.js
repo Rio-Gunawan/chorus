@@ -590,7 +590,7 @@ $(function () {
     // 音量のrangeとtextboxの連動
     $("#volume").on("input", function () {
         $("#whole_volume_text").val(Math.floor($(this).val() * 100));
-        if ($(this).val() > 1.01) {
+        if ($(this).val() > 3.01) {
             $("#volume_is_too_high").show();
         } else {
             $("#volume_is_too_high").hide();
