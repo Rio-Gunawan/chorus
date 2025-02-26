@@ -165,7 +165,7 @@ button#repeat svg {
 }
 
 button#repeat.active {
-    background-color: #6e6e6e;
+    background-color: #4e5aad;
 }
 
 button#repeat.active svg {
@@ -239,6 +239,17 @@ button#play_and_pause svg {
     border-radius: 50%;
     background: #2d3985;
     box-shadow: none;
+}
+
+/* ツマミ:disabledの時 */
+.inputRange:disabled::-webkit-slider-thumb {
+    background: #b0b0b0;
+    cursor: not-allowed;
+}
+
+.inputRange:disabled::-moz-range-thumb {
+    background: #b0b0b0;
+    cursor: not-allowed;
 }
 
 /* 再生時間の表示 */
@@ -340,6 +351,7 @@ input[type="radio"] {
     border-radius: 10px;
     border: 1px solid #c5c5c5;
     text-align: center;
+    transition: background 0.3s;
 }
 
 h2 {
@@ -358,6 +370,11 @@ input[type="text"] {
     padding: 5px;
     border: 1px solid #b0b0b0;
     border-radius: 5px;
+}
+
+input[type="text"]:disabled {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
 }
 
 select {
@@ -394,15 +411,34 @@ select {
 .mute svg {
     width: 25px;
     height: 25px;
-    fill: black;
+    fill: #888;
     /* SVGの色を黒に設定 */
     transition: fill 0.3s;
     transform: scale(0.6);
 }
 
+button.mute.active {
+    background-color: #4e5aad;
+}
+
+button.mute.active svg {
+    fill: white;
+}
+
+button.mute[disabled] {
+    background-color: #dddddd;
+    color: #b0b0b0;
+    cursor: not-allowed;
+    border: none;
+}
+
+button.mute[disabled] svg {
+    fill: #b0b0b0;
+}
+
 .solo {
     background-color: white;
-    color: black;
+    color: #888;
     border: 1px solid #2d3985;
     border-radius: 10px;
 
@@ -417,6 +453,11 @@ select {
     transition: background 0.3s;
 }
 
+button.solo.active {
+    background-color: #4e5aad;
+    color: white;
+}
+
 @media (hover: hover) and (pointer: fine) {
     .setting_panel button:hover {
         background-color: #2d3985;
@@ -426,6 +467,18 @@ select {
     .setting_panel button:hover svg {
         fill: white;
     }
+
+    .setting_panel button[disabled]:hover {
+        background-color: #dddddd;
+    }
+
+    .setting_panel button[disabled]:hover svg {
+        fill: #b0b0b0;
+    }
+}
+
+.setting_panel.muted {
+    background-color: #f5f5f5;
 }
 
 .setting_panel .buttons {

@@ -6,6 +6,7 @@ let isPlaying = false;
 let isRepeat = false;
 let isFirstPlayed = false;
 let volumes = { "all": 1, "metronome": 1, "soprano": 1, "alto": 1, "tenor": 1, "bass": 1 };
+let solo = { "metronome": false, "soprano": false, "alto": false, "tenor": false, "bass": false };
 let startTime = 0;
 let sources = [];
 let gainNodes = {};
@@ -211,6 +212,9 @@ $(async function () {
             newSource.onended = handleEnded; // 再生終了時の処理を設定
             sources[index] = newSource;
         });
+        progressbar.val(0);
+        setRangeStyle(progressbar[0]);
+        currentTime.text(convertTimeFormat(0));
     });
 
     // リピートボタンがクリックされた時の動作
@@ -232,6 +236,13 @@ $(async function () {
 
     $("#metronome").on("input", function () {
         const volume = $(this).val();
+        if (volume == 0) {
+            $("#metronome_mute").addClass("active");
+            $(this).parents('.setting_panel').addClass("muted");
+        } else if (volumes["metronome"] == 0) {
+            $("#metronome_mute").removeClass("active");
+            $(this).parents('.setting_panel').removeClass("muted");
+        }
         volumes["metronome"] = volume;
         if (isPlaying) {
             gainNodes.metronome.gain.value = volume * volumes["all"];
@@ -240,6 +251,13 @@ $(async function () {
 
     $("#soprano").on("input", function () {
         const volume = $(this).val();
+        if (volume == 0) {
+            $("#soprano_mute").addClass("active");
+            $(this).parents('.setting_panel').addClass("muted");
+        } else if (volumes["metronome"] == 0) {
+            $("#soprano_mute").removeClass("active");
+            $(this).parents('.setting_panel').removeClass("muted");
+        }
         volumes["soprano"] = volume;
         if (isPlaying) {
             gainNodes.soprano.gain.value = volume * volumes["all"];
@@ -248,6 +266,13 @@ $(async function () {
 
     $("#alto").on("input", function () {
         const volume = $(this).val();
+        if (volume == 0) {
+            $("#alto_mute").addClass("active");
+            $(this).parents('.setting_panel').addClass("muted");
+        } else {
+            $("#alto_mute").removeClass("active");
+            $(this).parents('.setting_panel').removeClass("muted");
+        }
         volumes["alto"] = volume;
         if (isPlaying) {
             gainNodes.alto.gain.value = volume * volumes["all"];
@@ -256,6 +281,13 @@ $(async function () {
 
     $("#tenor").on("input", function () {
         const volume = $(this).val();
+        if (volume == 0) {
+            $("#tenor_mute").addClass("active");
+            $(this).parents('.setting_panel').addClass("muted");
+        } else {
+            $("#tenor_mute").removeClass("active");
+            $(this).parents('.setting_panel').removeClass("muted");
+        }
         volumes["tenor"] = volume;
         if (isPlaying) {
             gainNodes.tenor.gain.value = volume * volumes["all"];
@@ -264,10 +296,91 @@ $(async function () {
 
     $("#bass").on("input", function () {
         const volume = $(this).val();
+        if (volume == 0) {
+            $("#bass_mute").addClass("active");
+            $(this).parents('.setting_panel').addClass("muted");
+        } else {
+            $("#bass_mute").removeClass("active");
+            $(this).parents('.setting_panel').removeClass("muted");
+        }
         volumes["bass"] = volume;
         if (isPlaying) {
             gainNodes.bass.gain.value = volume * volumes["all"];
         }
+    });
+
+    // ミュートボタンが押された時の動作
+    $(".mute").on("click", function () {
+        const target = $(this).attr("id").replace("_mute", "");
+        const targetVolume = $(`#${target}`);
+        $(this).toggleClass("active");
+        $(this).parents('.setting_panel').toggleClass("muted");
+        if (targetVolume.val() === "0") {
+            if (targetVolume.data("prev") === undefined) {
+                targetVolume.val(1);
+            } else {
+                targetVolume.val(targetVolume.data("prev"));
+            }
+        } else {
+            targetVolume.data("prev", targetVolume.val());
+            targetVolume.val(0);
+        }
+        targetVolume.trigger("input");
+    });
+
+    // ソロボタンが押された時の動作
+    $(".solo").on("click", function () {
+        const target = $(this).attr("id").replace("_solo", "");
+        solo[target] = !solo[target];
+        $(this).toggleClass("active");
+        if (!(solo["metronome"] || solo["soprano"] || solo["alto"] || solo["tenor"] || solo["bass"])) {
+            Object.keys(solo).forEach(key => {
+                const targetVolume = $(`#${key}`);
+                if (targetVolume.data("prev") === undefined) {
+                    targetVolume.val(1);
+                } else {
+                    targetVolume.val(targetVolume.data("prev"));
+                }
+                targetVolume.trigger("input");
+                $(`#${key}_mute`).removeClass("active");
+                $(`#${key}_mute`).attr("disabled", false);
+                $(`#${key}`).attr("disabled", false);
+                $(`#${key}_volume_text`).attr("disabled", false);
+                $(`#${key}_mute`).parents('.setting_panel').removeClass("muted");
+            });
+            return;
+        }
+        Object.keys(solo).forEach(key => {
+            const targetVolume = $(`#${key}`);
+            if (!solo[key]) {
+                if (targetVolume.val() !== "0") {
+                    targetVolume.data("prev", targetVolume.val());
+                }
+                targetVolume.val(0);
+                targetVolume.trigger("input");
+                $(`#${key}_mute`).addClass("active");
+                $(`#${key}_mute`).attr("disabled", true);
+                $(`#${key}`).attr("disabled", true);
+                $(`#${key}_volume_text`).attr("disabled", true);
+                $(`#${key}_mute`).parents('.setting_panel').addClass("muted");
+            } else {
+                if (targetVolume.val() === "0") {
+                    if (targetVolume.data("prev") !== undefined) {
+                        targetVolume.val(targetVolume.data("prev"));
+                    } else {
+                        targetVolume.val(1);
+                    }
+                } else {
+                    targetVolume.data("prev", targetVolume.val());
+                }
+                targetVolume.trigger("input");
+                $(`#${key}_mute`).removeClass("active");
+                $(`#${key}_mute`).attr("disabled", true);
+                $(`#${key}`).attr("disabled", false);
+                $(`#${key}_volume_text`).attr("disabled", false);
+                $(`#${key}_mute`).parents('.setting_panel').removeClass("muted");
+            }
+        });
     });
 });
 
