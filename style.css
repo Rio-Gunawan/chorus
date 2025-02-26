@@ -525,3 +525,54 @@ footer a {
 footer p {
     margin: 5px 0;
 }
+
+/* =============== 歌詞のCSS =============== */
+
+.lyrics {
+    padding: 0 5%;
+    background-color: #f5f5f5;
+    color: #999;
+    font-size: 1.5em;
+    line-height: 1.5em;
+    overflow-y: scroll;
+    height: 100vh;
+    position: relative;
+}
+
+.lyrics .info {
+    font-style: italic;
+    font-size: 0.6em;
+}
+
+.block {
+    display: flex;
+    width: 2em;
+    height: 2em;
+    justify-content: center;
+    align-items: center;
+    margin: 15px 0;
+    color: #999;
+    border: 2px solid #999;
+    font-size: 0.8em;
+}
+
+.block.active {
+    color: #222;
+    border: 2px solid #222;
+}
+
+.lyrics_row {
+    display: flex;
+    margin: 10px 0;
+}
+
+.lyrics_row.active {
+    font-weight: 700;
+    color: #222;
+}
+
+span.bar_num {
+    font-size: 0.5em;
+    margin-right: 1em;
+    font-style: italic;
+}

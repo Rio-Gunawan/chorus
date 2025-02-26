@@ -13,6 +13,18 @@ let startTime = 0;
 let sources = [];
 let gainNodes = {};
 
+let lyrics_time = [2.7, 8.7, 14.5, 20.4, 26.2, 32.0, 37.9, 43.8, 49.4, 55.4, 60.9, 63.5, 66.8, 72.6, 75.2, 78.6,
+    84.7, 88.0, 90.9, 103.0, 105.9, 108.5, 111.7, 114.7, 117.5, 120.6, 131.6, 134.5, 137.5, 141.4, 143.3, 148.1, 152.8,
+    156.1, 159.0, 162.7, 164.6, 168.2, 170.4, 176.6, 181.0, 185.1, 189.8, 199];
+let current_lyrics_position = 0;
+
+let lyrics_section_time = [0, 14.5, 26.2, 37.9, 60.9, 84.7, 103.8, 131.6, 152.8, 185.1, 199];
+let current_lyrics_section = 0;
+let isFirstClickedLyrics = false;
+
+let scroll_adjust = 0;
+let scroll_speed = 400;
+
 // Web Audio API用のコンテキスト
 let audioContext = null;
 
@@ -79,6 +91,10 @@ const playSound = function () {
             source.start();    // 再生
             source.onended = handleEnded; // 再生終了時の処理を設定
             gainNodes[name] = gainNode;   // GainNodeを保存
+            current_lyrics_position = 0;
+            $(".lyrics_row").removeClass("active");
+            current_lyrics_section = 0;
+            $(".block").removeClass("active");
             return source;
         });
 
@@ -117,6 +133,10 @@ const handleEnded = function () {
             source.buffer = buffer;    // オーディオバッファをノードに設定
             source.connect(gainNode).connect(audioContext.destination);    // 出力先設定
             source.start();    // 再生
+            current_lyrics_position = 0;
+            $(".lyrics_row").removeClass("active");
+            current_lyrics_section = 0;
+            $(".block").removeClass("active");
             source.onended = handleEnded; // 再生終了時の処理を設定
             gainNodes[name] = gainNode;   // GainNodeを保存
             return source;
@@ -154,6 +174,26 @@ const releaseSolo = function () {
             $(`#${key}`).attr("disabled", false);
             $(`#${key}_volume_text`).attr("disabled", false);
         });
+    }
+};
+
+// 現在のcurrent_lyrics_positionを取得する関数
+const getCurrentLyricsPosition = function (time) {
+    for (let i = 0; i < lyrics_time.length; i++) {
+        const position = lyrics_time[i];
+        if (time < position) {
+            return i - 1;
+        }
+    }
+};
+
+// 現在のcurrent_lyrics_sectionを取得する関数
+const getCurrentLyricsSection = function (time) {
+    for (let i = 0; i < lyrics_section_time.length; i++) {
+        const position = lyrics_section_time[i];
+        if (time < position) {
+            return i - 1;
+        }
     }
 };
 
@@ -206,6 +246,26 @@ $(async function () {
             progressbar.val(progress);
             setRangeStyle(progressbar[0]);
             currentTime.text(convertTimeFormat(current));
+
+            // 歌詞の更新
+            if (current >= lyrics_time[current_lyrics_position]) {
+                let target = $(`#${current_lyrics_position}`);
+                let position;
+
+                $(`#${current_lyrics_position - 1}`).removeClass("active");
+                target.addClass("active");
+
+                if (current >= lyrics_section_time[current_lyrics_section]) {
+                    $(`#${current_lyrics_section - 1}_sec`).removeClass("active");
+                    $(`#${current_lyrics_section}_sec`).addClass("active");
+                    current_lyrics_section++;
+                }
+                if (current_lyrics_position >= 2) {
+                    position = Math.round(target.position().top - scroll_adjust + $('.lyrics').scrollTop());
+                    $('.lyrics').animate({ scrollTop: position }, scroll_speed, 'swing');
+                }
+                current_lyrics_position++;
+            }
         }
     }, 100);
 
@@ -223,6 +283,10 @@ $(async function () {
             newSource.start(0, newTime);
             newSource.onended = handleEnded; // 再生終了時の処理を設定
             sources[index] = newSource;
+            current_lyrics_position = getCurrentLyricsPosition(newTime);
+            $(".lyrics_row").removeClass("active");
+            current_lyrics_section = getCurrentLyricsSection(newTime);
+            $(".block").removeClass("active");
         });
     });
 
@@ -235,6 +299,10 @@ $(async function () {
             newSource.buffer = source.buffer;
             newSource.connect(gainNodes[Object.keys(audioBuffers)[index]]).connect(audioContext.destination);
             newSource.start();
+            current_lyrics_position = 0;
+            $(".lyrics_row").removeClass("active");
+            current_lyrics_section = 0;
+            $(".block").removeClass("active");
             newSource.onended = handleEnded; // 再生終了時の処理を設定
             sources[index] = newSource;
         });
@@ -580,11 +648,38 @@ function convertTimeFormat(time) {
 
 $(function () {
     $(".blank").css("height", $("#bottom_menu").height());
+    $(".lyrics").css("height", ($(window).height() - $("#bottom_menu").outerHeight() - $("header").outerHeight() - $(".tab_area").outerHeight() - 20));
+    window.addEventListener("resize", function () {
+        $(".lyrics").css("height", ($(window).height() - $("#bottom_menu").outerHeight() - $("header").outerHeight() - $(".tab_area").outerHeight() - 10));
+    });
     Object.values($(".inputRange")).forEach((input) => {
         setRangeStyle(input);
     });
     $(".inputRange").on("input", function () {
         setRangeStyle(this);
+    });
+
+
+    $(".tab2_label").on("click", function () {
+        let target = $(`#${current_lyrics_position - 1}`);
+        let position = 0;
+        if (!isFirstClickedLyrics) {
+            isFirstClickedLyrics = true;
+            setTimeout(function () {
+                scroll_adjust = $("#1").position().top;
+                if (current_lyrics_position >= 2) {
+                    position = Math.round(target.position().top - scroll_adjust + $('.lyrics').scrollTop());
+                    $('.lyrics').animate({ scrollTop: position }, scroll_speed, 'swing');
+                }
+            }, 1);
+        } else {
+            if (current_lyrics_position >= 2) {
+                setTimeout(function () {
+                    position = Math.round(target.position().top - scroll_adjust + $('.lyrics').scrollTop());
+                    $('.lyrics').animate({ scrollTop: position }, scroll_speed, 'swing');
+                }, 1);
+            }
+        }
     });
 
     // 音量のrangeとtextboxの連動
