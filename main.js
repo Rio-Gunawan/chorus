@@ -218,7 +218,11 @@ const getCurrentLyricsSection = function (time) {
     for (let i = 0; i < lyrics_section_time.length; i++) {
         const position = lyrics_section_time[i];
         if (time < position) {
-            return i - 1;
+            if (i == 0) {
+                return 0;
+            } else {
+                return i - 1;
+            }
         }
     }
 };
