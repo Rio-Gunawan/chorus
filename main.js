@@ -78,6 +78,11 @@ const playSound = function () {
             gainNodes[name] = gainNode;   // GainNodeを保存
             return source;
         });
+
+        // 音量を設定
+        Object.keys(gainNodes).forEach(gainNodeKey => {
+            gainNodes[gainNodeKey].gain.value = volumes[gainNodeKey] * volumes["all"];
+        });
         isFirstPlayed = true;
     }
 };
@@ -112,6 +117,10 @@ const handleEnded = function () {
             source.onended = handleEnded; // 再生終了時の処理を設定
             gainNodes[name] = gainNode;   // GainNodeを保存
             return source;
+        });
+        // 音量を設定
+        Object.keys(gainNodes).forEach(gainNodeKey => {
+            gainNodes[gainNodeKey].gain.value = volumes[gainNodeKey] * volumes["all"];
         });
     } else {
         isPlaying = false;
@@ -214,39 +223,51 @@ $(async function () {
     $("#volume").on("input", function () {
         const volume = $(this).val();
         volumes["all"] = volume;
-        Object.keys(gainNodes).forEach(gainNodeKey => {
-            gainNodes[gainNodeKey].gain.value = volumes[gainNodeKey] * volume;
-        });
+        if (isPlaying) {
+            Object.keys(gainNodes).forEach(gainNodeKey => {
+                gainNodes[gainNodeKey].gain.value = volumes[gainNodeKey] * volume;
+            });
+        }
     });
 
     $("#metronome").on("input", function () {
         const volume = $(this).val();
         volumes["metronome"] = volume;
-        gainNodes.metronome.gain.value = volume * volumes["all"];
+        if (isPlaying) {
+            gainNodes.metronome.gain.value = volume * volumes["all"];
+        }
     });
 
     $("#soprano").on("input", function () {
         const volume = $(this).val();
         volumes["soprano"] = volume;
-        gainNodes.soprano.gain.value = volume * volumes["all"];
+        if (isPlaying) {
+            gainNodes.soprano.gain.value = volume * volumes["all"];
+        }
     });
 
     $("#alto").on("input", function () {
         const volume = $(this).val();
         volumes["alto"] = volume;
-        gainNodes.alto.gain.value = volume * volumes["all"];
+        if (isPlaying) {
+            gainNodes.alto.gain.value = volume * volumes["all"];
+        }
     });
 
     $("#tenor").on("input", function () {
         const volume = $(this).val();
         volumes["tenor"] = volume;
-        gainNodes.tenor.gain.value = volume * volumes["all"];
+        if (isPlaying) {
+            gainNodes.tenor.gain.value = volume * volumes["all"];
+        }
     });
 
     $("#bass").on("input", function () {
         const volume = $(this).val();
         volumes["bass"] = volume;
-        gainNodes.bass.gain.value = volume * volumes["all"];
+        if (isPlaying) {
+            gainNodes.bass.gain.value = volume * volumes["all"];
+        }
     });
 });
 
