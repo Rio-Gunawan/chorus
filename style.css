@@ -488,6 +488,10 @@ button.solo.active {
     }
 }
 
+.preset {
+    margin-top: 10px;
+}
+
 .setting_panel.muted {
     background-color: #f5f5f5;
 }
@@ -550,7 +554,7 @@ input[type="checkbox"].instrument_type {
 }
 
 .type {
-    margin: 10px 0;
+    margin-bottom: 15px;
 }
 
 /* ============== footerのCSS ============== */
