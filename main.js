@@ -247,6 +247,22 @@ const changeInstrument = function (target) {
     }
 };
 
+// 全てボカロまたはピアノモードであれば、全パート共通の設定の欄の種類欄を設定する関数
+const changeInstrumentStatusOfAll = function () {
+    let isAllVocal = $("#vocal_soprano").prop('checked') && $(`#vocal_alto`).prop('checked') && $(`#vocal_tenor`).prop('checked') && $(`#vocal_bass`).prop('checked');
+    let isNoVocal = !($("#vocal_soprano").prop('checked') || $(`#vocal_alto`).prop('checked') || $(`#vocal_tenor`).prop('checked') || $(`#vocal_bass`).prop('checked'));
+    let isAllPiano = $("#piano_soprano").prop('checked') && $(`#piano_alto`).prop('checked') && $(`#piano_tenor`).prop('checked') && $(`#piano_bass`).prop('checked');
+    let isNoPiano = !($("#piano_soprano").prop('checked') || $(`#piano_alto`).prop('checked') || $(`#piano_tenor`).prop('checked') || $(`#piano_bass`).prop('checked'));
+
+    if (isAllVocal && isNoPiano) {
+        $("#vocal").prop('checked', true);
+        $("#piano").prop('checked', false);
+    } else if (isAllPiano && isNoVocal) {
+        $("#vocal").prop('checked', false);
+        $("#piano").prop('checked', true);
+    }
+};
+
 $(async function () {
     // Web Audio API用音声コンテキスト生成
     audioContext = new AudioContext();
@@ -409,7 +425,7 @@ $(async function () {
     });
 
     // 音量が変更された時の処理
-    $("#volume").on("input", function () {
+    $("#whole").on("input", function () {
         const volume = $(this).val();
         volumes["all"] = volume;
         if (isPlaying) {
@@ -438,71 +454,23 @@ $(async function () {
         }
     });
 
-    $("#soprano").on("input", function () {
-        const volume = $(this).val();
-        if (volume == 0) {
-            $("#soprano_mute").addClass("active");
-            $(this).parents('.setting_panel').addClass("muted");
-            if (!isSolo) {
-                mute["soprano"] = true;
-            }
-        } else if (volumes["soprano"] == 0) {
-            mute["soprano"] = false;
-            $("#soprano_mute").removeClass("active");
-            $(this).parents('.setting_panel').removeClass("muted");
-        }
-        changeInstrument("soprano");
-    });
+    // パート別の音量が変更された時の動作
 
-    $("#alto").on("input", function () {
+    $(".part_volume").on("input", function () {
+        const target = $(this).attr("id");
         const volume = $(this).val();
         if (volume == 0) {
-            $("#alto_mute").addClass("active");
+            $(`#${target}_mute`).addClass("active");
             $(this).parents('.setting_panel').addClass("muted");
             if (!isSolo) {
-                mute["alto"] = true;
+                mute[target] = true;
             }
-        } else if (volumes["alto"] == 0) {
-            mute["alto"] = false;
-            $("#alto_mute").removeClass("active");
+        } else if (volumes[target] == 0) {
+            mute[target] = false;
+            $(`#${target}_mute`).removeClass("active");
             $(this).parents('.setting_panel').removeClass("muted");
         }
-        volumes["alto"] = volume;
-        changeInstrument("alto");
-    });
-
-    $("#tenor").on("input", function () {
-        const volume = $(this).val();
-        if (volume == 0) {
-            $("#tenor_mute").addClass("active");
-            $(this).parents('.setting_panel').addClass("muted");
-            if (!isSolo) {
-                mute["tenor"] = true;
-            }
-        } else if (volumes["tenor"] == 0) {
-            mute["tenor"] = false;
-            $("#tenor_mute").removeClass("active");
-            $(this).parents('.setting_panel').removeClass("muted");
-        }
-        volumes["tenor"] = volume;
-        changeInstrument("tenor");
-    });
-
-    $("#bass").on("input", function () {
-        const volume = $(this).val();
-        if (volume == 0) {
-            $("#bass_mute").addClass("active");
-            $(this).parents('.setting_panel').addClass("muted");
-            if (!isSolo) {
-                mute["bass"] = true;
-            }
-        } else if (volumes["bass"] == 0) {
-            mute["bass"] = false;
-            $("#bass_mute").removeClass("active");
-            $(this).parents('.setting_panel').removeClass("muted");
-        }
-        volumes["bass"] = volume;
-        changeInstrument("bass");
+        changeInstrument(target);
     });
 
     // ミュートボタンが押された時の動作
@@ -716,74 +684,17 @@ $(async function () {
     });
 
     // ボカロとピアノの交換
-    $('input[name="instrument_type_soprano"]').on("change", function () {
+    $('.instrument_part_type').on("change", function () {
+        const target = $(this).attr("id").replace("vocal_", "").replace("piano_", "");;
+
         $("#vocal").prop("checked", false);
         $("#piano").prop("checked", false);
-        if (!$('#vocal_soprano').prop('checked') && !$('#piano_soprano').prop('checked')) {
-            $(this).prop('checked', true);
+        if (!$(`#vocal_${target}`).prop('checked') && !$(`#piano_${target}`).prop('checked')) {
+            $(`#${target}_mute`).trigger('click');
         }
 
-        $("#soprano").trigger("input");
-    });
-
-    $('input[name="instrument_type_alto"]').on("change", function () {
-        $("#vocal").prop("checked", false);
-        $("#piano").prop("checked", false);
-        if (!$('#vocal_alto').prop('checked') && !$('#piano_alto').prop('checked')) {
-            $(this).prop('checked', true);
-        }
-        if ($('#vocal_alto').prop('checked')) {
-            volumes["alto"] = $("#alto").val();
-        } else {
-            volumes["alto"] = 0;
-        }
-        if ($('#piano_alto').prop('checked')) {
-            volumes["piano_alto"] = $("#alto").val();
-        } else {
-            volumes["piano_alto"] = 0;
-        }
-
-        $("#alto").trigger("input");
-    });
-
-    $('input[name="instrument_type_tenor"]').on("change", function () {
-        $("#vocal").prop("checked", false);
-        $("#piano").prop("checked", false);
-        if (!$('#vocal_tenor').prop('checked') && !$('#piano_tenor').prop('checked')) {
-            $(this).prop('checked', true);
-        }
-        if ($('#vocal_tenor').prop('checked')) {
-            volumes["tenor"] = $("#tenor").val();
-        } else {
-            volumes["tenor"] = 0;
-        }
-        if ($('#piano_tenor').prop('checked')) {
-            volumes["piano_tenor"] = $("#tenor").val();
-        } else {
-            volumes["piano_tenor"] = 0;
-        }
-
-        $("#tenor").trigger("input");
-    });
-
-    $('input[name="instrument_type_bass"]').on("change", function () {
-        $("#vocal").prop("checked", false);
-        $("#piano").prop("checked", false);
-        if (!$('#vocal_bass').prop('checked') && !$('#piano_bass').prop('checked')) {
-            $(this).prop('checked', true);
-        }
-        if ($('#vocal_bass').prop('checked')) {
-            volumes["bass"] = $("#bass").val();
-        } else {
-            volumes["bass"] = 0;
-        }
-        if ($('#piano_bass').prop('checked')) {
-            volumes["piano_bass"] = $("#bass").val();
-        } else {
-            volumes["piano_bass"] = 0;
-        }
-
-        $("#bass").trigger("input");
+        changeInstrumentStatusOfAll();
+        $(`#${target}`).trigger("input");
     });
 
     $('input[name="instrument_type"]').on("change", function () {
@@ -865,7 +776,7 @@ $(function () {
     });
 
     // 音量のrangeとtextboxの連動
-    $("#volume").on("input", function () {
+    $("#whole").on("input", function () {
         $("#whole_volume_text").val(Math.floor($(this).val() * 100));
         if ($(this).val() > 3.01) {
             $("#volume_is_too_high").show();
@@ -873,43 +784,16 @@ $(function () {
             $("#volume_is_too_high").hide();
         }
     });
-    $("#whole_volume_text").on("input", function () {
-        $("#volume").val($(this).val() / 100);
-        $("#volume").trigger("input");
-    });
     $("#metronome").on("input", function () {
         $("#metronome_volume_text").val(Math.floor($(this).val() * 100));
     });
-    $("#metronome_volume_text").on("input", function () {
-        $("#metronome").val($(this).val() / 100);
-        $("#metronome").trigger("input");
+    $(".part_volume").on("input", function () {
+        const target = $(this).attr("id");
+        $(`#${target}_volume_text`).val(Math.floor($(this).val() * 100));
     });
-    $("#soprano").on("input", function () {
-        $("#soprano_volume_text").val(Math.floor($(this).val() * 100));
-    });
-    $("#soprano_volume_text").on("input", function () {
-        $("#soprano").val($(this).val() / 100);
-        $("#soprano").trigger("input");
-    });
-    $("#alto").on("input", function () {
-        $("#alto_volume_text").val(Math.floor($(this).val() * 100));
-    });
-    $("#alto_volume_text").on("input", function () {
-        $("#alto").val($(this).val() / 100);
-        $("#alto").trigger("input");
-    });
-    $("#tenor").on("input", function () {
-        $("#tenor_volume_text").val(Math.floor($(this).val() * 100));
-    });
-    $("#tenor_volume_text").on("input", function () {
-        $("#tenor").val($(this).val() / 100);
-        $("#tenor").trigger("input");
-    });
-    $("#bass").on("input", function () {
-        $("#bass_volume_text").val(Math.floor($(this).val() * 100));
-    });
-    $("#bass_volume_text").on("input", function () {
-        $("#bass").val($(this).val() / 100);
-        $("#bass").trigger("input");
+    $(".inputText").on("input", function () {
+        const target = $(this).attr("id").replace("_volume_text", "");
+        $(`#${target}`).val($(this).val() / 100);
+        $(`#${target}`).trigger("input");
     });
 });

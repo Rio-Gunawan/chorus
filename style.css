@@ -542,6 +542,10 @@ button.solo.active {
     /* マウス選択時のフォント色を指定する */
 }
 
+.muted .instrument_type_label:has(input[type="checkbox"]:checked) {
+    background: #999;
+}
+
 input[type="checkbox"].instrument_type {
     display: none;
 }
