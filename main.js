@@ -172,6 +172,8 @@ const handleEnded = function () {
         isFirstPlay = true;
         $("#play").show();
         $("#pause").hide();
+        // 再生終了時に再生ボタンと一時停止ボタンの表示を切り替える
+        $("#play_and_pause").attr("title", "再生").attr("aria-label", "再生");
     }
 };
 
@@ -231,16 +233,10 @@ const getCurrentLyricsSection = function (time) {
 
 // ボカロとピアノ音源を切り替える関数
 const changeInstrument = function (target) {
-    if ($(`#vocal_${target}`).prop('checked')) {
-        volumes[target] = $(`#${target}`).val();
-    } else {
-        volumes[target] = 0;
-    }
-    if ($(`#piano_${target}`).prop('checked')) {
-        volumes[`piano_${target}`] = $(`#${target}`).val();
-    } else {
-        volumes[`piano_${target}`] = 0;
-    }
+    const vocalChecked = $(`#vocal_${target}`).prop('checked');
+    const pianoChecked = $(`#piano_${target}`).prop('checked');
+    volumes[target] = vocalChecked ? $(`#${target}`).val() : 0;
+    volumes[`piano_${target}`] = pianoChecked ? $(`#${target}`).val() : 0;
 
     if (isPlaying) {
         gainNodes[target].gain.value = volumes[target] * volumes["all"];
@@ -296,10 +292,12 @@ $(async function () {
         $("#play").toggle();
         $("#pause").toggle();
 
-        // isPlayingがtrueの時、音楽を再生する
+        // isPlayingがtrueの時、音楽を再生し、再生と一時停止の表示を切り替える
         if (isPlaying) {
+            $(this).attr("title", "一時停止").attr("aria-label", "一時停止");
             playSound();
         } else {
+            $(this).attr("title", "再生").attr("aria-label", "再生");
             pauseSound();
         }
     });

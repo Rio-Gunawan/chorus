@@ -52,7 +52,7 @@
                 <!-- 音声のパネル -->
                 <p class="alert_text">iPhone・iPadをお使いの方は、消音モードでは音が出ないことがありますので、消音モードを解除してご利用ください。</p>
                 <h2>全パート共通の設定</h2>
-                <div class="common_setting setting_panel">
+                <section class="common_setting setting_panel">
                     <div class="type">
                         <div class="range_label">種類</div>
                         <div class="instrument_type_container">
@@ -91,17 +91,17 @@
                             メトロノーム入り
                         </label>
                     </div>
-                </div>
+                </section>
                 <h2>各パート個別での設定</h2>
-                <div class="part_setting">
-                    <div class="part setting_panel">
+                <section class="part_setting">
+                    <section class="part setting_panel">
                         <h3><label for="metronome">メトロノーム</label></h3>
                         <div class="range_label"><label for="metronome">音量</label></div>
                         <input type="range" id="metronome" class="inputRange" name="metronome" step="any" min="0" max="1"
                             value="1">
                         <input type="text" id="metronome_volume_text" class="inputText" name="metronome" value="100"> %
                         <div class="buttons">
-                            <button class="mute" id="metronome_mute" title="ミュート">
+                            <button class="mute" id="metronome_mute" title="ミュート" aria-label="メトロノームのミュート">
                                 <svg xmlns="http://www.w3.org/2000/svg">
                                     <path d="M0 0h24v24H0z" fill="none" />
                                     <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0
@@ -110,11 +110,11 @@
                                     2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
                                 </svg>
                             </button>
-                            <button class="solo" id="metronome_solo" title="ソロ">ソロ</button>
+                            <button class="solo" id="metronome_solo" title="ソロ" aria-label="メトロノームのソロ">ソロ</button>
                         </div>
-                    </div>
+                    </section>
                     <p class="info">※メトロノームの音源は、音量が他より少し大きくなっています。</p>
-                    <div class="part setting_panel">
+                    <section class="part setting_panel">
                         <h3><label for="soprano">ソプラノ</label></h3>
                         <div class="type">
                             <div class="range_label">種類</div>
@@ -132,7 +132,7 @@
                             value="1">
                         <input type="text" id="soprano_volume_text" class="inputText" name="soprano" value="100"> %
                         <div class="buttons">
-                            <button class="mute" id="soprano_mute" title="ミュート">
+                            <button class="mute" id="soprano_mute" title="ミュート" aria-label="ソプラノのミュート">
                                 <svg xmlns="http://www.w3.org/2000/svg">
                                     <path d="M0 0h24v24H0z" fill="none" />
                                     <path
@@ -142,10 +142,10 @@
                                                             2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
                                 </svg>
                             </button>
-                            <button class="solo" id="soprano_solo" title="ソロ">ソロ</button>
+                            <button class="solo" id="soprano_solo" title="ソロ" aria-label="ソプラノのソロ">ソロ</button>
                         </div>
-                    </div>
-                    <div class="part setting_panel">
+                    </section>
+                    <section class="part setting_panel">
                         <h3><label for="alto">アルト</label></h3>
                         <div class="type">
                             <div class="range_label">種類</div>
@@ -162,7 +162,7 @@
                             value="1">
                         <input type="text" id="alto_volume_text" class="inputText" name="alto" value="100"> %
                         <div class="buttons">
-                            <button class="mute" id="alto_mute" title="ミュート">
+                            <button class="mute" id="alto_mute" title="ミュート" aria-label="アルトのミュート">
                                 <svg xmlns="http://www.w3.org/2000/svg">
                                     <path d="M0 0h24v24H0z" fill="none" />
                                     <path
@@ -172,10 +172,10 @@
                                                             2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
                                 </svg>
                             </button>
-                            <button class="solo" id="alto_solo" title="ソロ">ソロ</button>
+                            <button class="solo" id="alto_solo" title="ソロ" aria-label="アルトのソロ">ソロ</button>
                         </div>
-                    </div>
-                    <div class="part setting_panel">
+                    </section>
+                    <section class="part setting_panel">
                         <h3><label for="tenor">テノール</label></h3>
                         <div class="type">
                             <div class="range_label">種類</div>
@@ -192,7 +192,7 @@
                             value="1">
                         <input type="text" id="tenor_volume_text" class="inputText" name="tenor" value="100"> %
                         <div class="buttons">
-                            <button class="mute" id="tenor_mute" title="ミュート">
+                            <button class="mute" id="tenor_mute" title="ミュート" aria-label="テノールのミュート">
                                 <svg xmlns="http://www.w3.org/2000/svg">
                                     <path d="M0 0h24v24H0z" fill="none" />
                                     <path
@@ -202,10 +202,10 @@
                                                             2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
                                 </svg>
                             </button>
-                            <button class="solo" id="tenor_solo" title="ソロ">ソロ</button>
+                            <button class="solo" id="tenor_solo" title="ソロ" aria-label="テノールのソロ">ソロ</button>
                         </div>
-                    </div>
-                    <div class="part setting_panel">
+                    </section>
+                    <section class="part setting_panel">
                         <h3><label for="bass">バス</label></h3>
                         <div class="type">
                             <div class="range_label">種類</div>
@@ -222,7 +222,7 @@
                             value="1">
                         <input type="text" id="bass_volume_text" class="inputText" name="bass" value="100"> %
                         <div class="buttons">
-                            <button class="mute" id="bass_mute" title="ミュート">
+                            <button class="mute" id="bass_mute" title="ミュート" aria-label="バスのミュート">
                                 <svg xmlns="http://www.w3.org/2000/svg">
                                     <path d="M0 0h24v24H0z" fill="none" />
                                     <path
@@ -232,10 +232,10 @@
                                                             2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z" />
                                 </svg>
                             </button>
-                            <button class="solo" id="bass_solo" title="ソロ">ソロ</button>
+                            <button class="solo" id="bass_solo" title="ソロ" aria-label="バスのソロ">ソロ</button>
                         </div>
-                    </div>
-                </div>
+                    </section>
+                </section>
                 <footer>
                     <p>&copy; 2025 Rio Gunawan</p>
                     <p>歌唱音源</p>
@@ -328,12 +328,12 @@
         <div class="player_container">
             <span id="current_time">0:00</span>
             <div id="player">
-                <button id="prev" title="前へ">
+                <button id="prev" title="前へ" aria-label="前へ">
                     <svg xmlns="http://www.w3.org/2000/svg">
                         <path d="M6 6h2v12H6zm3.5 6l8.5 6V6z" />
                     </svg>
                 </button>
-                <button id="play_and_pause" title="再生" disabled>
+                <button id="play_and_pause" title="再生" aria-label="再生" disabled>
                     <svg xmlns="http://www.w3.org/2000/svg" id="play">
                         <path d="M8 5v14l11-7z" />
                     </svg>
@@ -341,7 +341,7 @@
                         <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z" />
                     </svg>
                 </button>
-                <button id="repeat" title="リピート">
+                <button id="repeat" title="リピート" aria-label="リピート">
                     <svg xmlns="http://www.w3.org/2000/svg">
                         <path d="M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z" />
                     </svg>
