@@ -251,7 +251,10 @@ const changeInstrumentStatusOfAll = function () {
     let isAllPiano = $("#piano_soprano").prop('checked') && $(`#piano_alto`).prop('checked') && $(`#piano_tenor`).prop('checked') && $(`#piano_bass`).prop('checked');
     let isNoPiano = !($("#piano_soprano").prop('checked') || $(`#piano_alto`).prop('checked') || $(`#piano_tenor`).prop('checked') || $(`#piano_bass`).prop('checked'));
 
-    if (isAllVocal && isNoPiano) {
+    if (isAllPiano && isAllVocal) {
+        $("#vocal").prop('checked', true);
+        $("#piano").prop('checked', true);
+    } else if (isAllVocal && isNoPiano) {
         $("#vocal").prop('checked', true);
         $("#piano").prop('checked', false);
     } else if (isAllPiano && isNoVocal) {
@@ -710,11 +713,13 @@ $(async function () {
     });
 
     $('input[name="instrument_type"]').on("change", function () {
-        if ($('#vocal').prop('checked')) {
+        if ($('#vocal').prop('checked') || $('#piano').prop('checked')) {
             $('input[name="instrument_type_soprano"]').prop('checked', false);
             $('input[name="instrument_type_alto"]').prop('checked', false);
             $('input[name="instrument_type_tenor"]').prop('checked', false);
             $('input[name="instrument_type_bass"]').prop('checked', false);
+        }
+        if ($('#vocal').prop('checked')) {
             $('#vocal_soprano').prop('checked', true);
             $('#vocal_alto').prop('checked', true);
             $('#vocal_tenor').prop('checked', true);
@@ -723,11 +728,8 @@ $(async function () {
             changeInstrument("alto");
             changeInstrument("tenor");
             changeInstrument("bass");
-        } else if ($('#piano').prop('checked')) {
-            $('input[name="instrument_type_soprano"]').prop('checked', false);
-            $('input[name="instrument_type_alto"]').prop('checked', false);
-            $('input[name="instrument_type_tenor"]').prop('checked', false);
-            $('input[name="instrument_type_bass"]').prop('checked', false);
+        }
+        if ($('#piano').prop('checked')) {
             $('#piano_soprano').prop('checked', true);
             $('#piano_alto').prop('checked', true);
             $('#piano_tenor').prop('checked', true);
