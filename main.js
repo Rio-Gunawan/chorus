@@ -4,7 +4,7 @@ const inactiveColor = "#dddddd";
 
 let isPlaying = false;
 let isRepeat = false;
-let isFirstPlayed = false;
+let isFirstPlay = true;
 let volumes = {
     "all": 1,
     "metronome": 1,
@@ -89,11 +89,7 @@ const playSound = function () {
         audioContext.resume().then(() => playSound());
         return;
     }
-    if (isFirstPlayed) {
-        if (audioContext.state === "suspended") {
-            audioContext.resume();
-        }
-    } else {
+    if (isFirstPlay) {
         if (audioContext.state === "suspended") {
             audioContext.resume();
         }
@@ -123,7 +119,11 @@ const playSound = function () {
         Object.keys(gainNodes).forEach(gainNodeKey => {
             gainNodes[gainNodeKey].gain.value = volumes[gainNodeKey] * volumes["all"];
         });
-        isFirstPlayed = true;
+        isFirstPlay = false;
+    } else {
+        if (audioContext.state === "suspended") {
+            audioContext.resume();
+        }
     }
 };
 
@@ -169,7 +169,7 @@ const handleEnded = function () {
         });
     } else {
         isPlaying = false;
-        isFirstPlayed = false;
+        isFirstPlay = true;
         $("#play").show();
         $("#pause").hide();
     }
@@ -505,7 +505,7 @@ $(async function () {
         }
         isSolo = true;
 
-        if (!solo["metronome"]){
+        if (!solo["metronome"]) {
             // 他のパートがソロの時に、メトロノームのソロモードを変更できないようにする
             $("#metronome_solo").removeClass("active").attr("disabled", true);
         } else {
