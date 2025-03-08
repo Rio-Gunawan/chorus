@@ -443,6 +443,13 @@ button.mute[disabled] {
     border: none;
 }
 
+button.solo[disabled] {
+    background-color: #dddddd;
+    color: #b0b0b0;
+    cursor: not-allowed;
+    border: 1px solid #b0b0b0;
+}
+
 button.mute[disabled] svg {
     fill: #b0b0b0;
 }
@@ -485,6 +492,11 @@ button.solo.active {
 
     .setting_panel button[disabled]:hover svg {
         fill: #b0b0b0;
+    }
+
+    button.solo[disabled] {
+        background-color: #dddddd;
+        color: #b0b0b0;
     }
 }
 

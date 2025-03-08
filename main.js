@@ -179,6 +179,7 @@ const handleEnded = function () {
 const releaseSolo = function () {
     if (isSolo) {
         isSolo = false;
+        $("#metronome_solo").attr("disabled", false);
         Object.keys(solo).forEach(key => {
             const targetVolume = $(`#${key}`);
             solo[key] = false;
@@ -503,35 +504,48 @@ $(async function () {
             return;
         }
         isSolo = true;
+
+        if (!solo["metronome"]){
+            // 他のパートがソロの時に、メトロノームのソロモードを変更できないようにする
+            $("#metronome_solo").removeClass("active").attr("disabled", true);
+        } else {
+            if (solo["soprano"] || solo["alto"] || solo["tenor"] || solo["bass"]) {
+                // メトロノームがソロの時に、他のパートをソロにしたら自動的にソロを解除する
+                $("#metronome_solo").removeClass("active").attr("disabled", true);
+                solo["metronome"] = false;
+            }
+        }
         Object.keys(solo).forEach(key => {
-            const targetVolume = $(`#${key}`);
-            if (!solo[key]) {
-                if (targetVolume.val() !== "0") {
-                    targetVolume.data("prev", targetVolume.val());
-                }
-                targetVolume.val(0);
-                targetVolume.trigger("input");
-                $(`#${key}_mute`).addClass("active");
-                $(`#${key}_mute`).attr("disabled", true);
-                $(`#${key}`).attr("disabled", true);
-                $(`#${key}_volume_text`).attr("disabled", true);
-                $(`#${key}_mute`).parents('.setting_panel').addClass("muted");
-            } else {
-                if (targetVolume.val() === "0") {
-                    if (targetVolume.data("prev") !== undefined) {
-                        targetVolume.val(targetVolume.data("prev"));
-                    } else {
-                        targetVolume.val(1);
+            if (key !== "metronome") {
+                const targetVolume = $(`#${key}`);
+                if (!solo[key]) {
+                    if (targetVolume.val() !== "0") {
+                        targetVolume.data("prev", targetVolume.val());
                     }
+                    targetVolume.val(0);
+                    targetVolume.trigger("input");
+                    $(`#${key}_mute`).addClass("active");
+                    $(`#${key}_mute`).attr("disabled", true);
+                    $(`#${key}`).attr("disabled", true);
+                    $(`#${key}_volume_text`).attr("disabled", true);
+                    $(`#${key}_mute`).parents('.setting_panel').addClass("muted");
                 } else {
-                    targetVolume.data("prev", targetVolume.val());
+                    if (targetVolume.val() === "0") {
+                        if (targetVolume.data("prev") !== undefined) {
+                            targetVolume.val(targetVolume.data("prev"));
+                        } else {
+                            targetVolume.val(1);
+                        }
+                    } else {
+                        targetVolume.data("prev", targetVolume.val());
+                    }
+                    targetVolume.trigger("input");
+                    $(`#${key}_mute`).removeClass("active");
+                    $(`#${key}_mute`).attr("disabled", true);
+                    $(`#${key}`).attr("disabled", false);
+                    $(`#${key}_volume_text`).attr("disabled", false);
+                    $(`#${key}_mute`).parents('.setting_panel').removeClass("muted");
                 }
-                targetVolume.trigger("input");
-                $(`#${key}_mute`).removeClass("active");
-                $(`#${key}_mute`).attr("disabled", true);
-                $(`#${key}`).attr("disabled", false);
-                $(`#${key}_volume_text`).attr("disabled", false);
-                $(`#${key}_mute`).parents('.setting_panel').removeClass("muted");
             }
         });
     });
