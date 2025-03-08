@@ -376,6 +376,14 @@ $(async function () {
             current_lyrics_section = getCurrentLyricsSection(newTime);
             $(".block").removeClass("active");
         });
+        if (!isPlaying) {
+            isFirstPlay = false;
+            isPlaying = true;
+            $("#play").toggle();
+            $("#pause").toggle();
+            $("#play_and_pause").attr("title", "一時停止").attr("aria-label", "一時停止");
+            playSound();
+        }
     });
 
     // 歌詞セクションがクリックされた時の動作
