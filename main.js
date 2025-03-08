@@ -764,8 +764,11 @@ function convertTimeFormat(time) {
 $(function () {
     $(".blank").css("height", $("#bottom_menu").height());
     $(".lyrics").css("height", ($(window).height() - $("#bottom_menu").outerHeight() - $("header").outerHeight() - $(".tab_area").outerHeight() - 20));
+    // 初期状態で.score_btnの高さを取得できないので、代わりに.range_labelの高さを使う。
+    $("#score").css("height", ($(window).height() - $("#bottom_menu").outerHeight() - $("header").outerHeight() - $(".tab_area").outerHeight() - 20 - $(".range_label").outerHeight()));
     window.addEventListener("resize", function () {
-        $(".lyrics").css("height", ($(window).height() - $("#bottom_menu").outerHeight() - $("header").outerHeight() - $(".tab_area").outerHeight() - 10));
+        $(".lyrics").css("height", ($(window).height() - $("#bottom_menu").outerHeight() - $("header").outerHeight() - $(".tab_area").outerHeight() - 20));
+        $("#score").css("height", ($(window).height() - $("#bottom_menu").outerHeight() - $("header").outerHeight() - $(".tab_area").outerHeight() - 20 - $(".score_btn").outerHeight()));
     });
     Object.values($(".inputRange")).forEach((input) => {
         setRangeStyle(input);

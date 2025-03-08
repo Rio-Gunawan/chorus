@@ -42,10 +42,12 @@
     <div class="tab_wrap">
         <input id="tab1" type="radio" name="tab_btn" checked>
         <input id="tab2" type="radio" name="tab_btn">
+        <input id="tab3" type="radio" name="tab_btn">
 
         <div class="tab_area">
             <label class="tab1_label" for="tab1">音声</label>
             <label class="tab2_label" for="tab2">歌詞</label>
+            <label class="tab3_label" for="tab3">楽譜</label>
         </div>
         <div class="panel_area">
             <div id="panel1" class="tab_panel">
@@ -97,8 +99,8 @@
                     <section class="part setting_panel">
                         <h3><label for="metronome">メトロノーム</label></h3>
                         <div class="range_label"><label for="metronome">音量</label></div>
-                        <input type="range" id="metronome" class="inputRange" name="metronome" step="any" min="0" max="1"
-                            value="1">
+                        <input type="range" id="metronome" class="inputRange" name="metronome" step="any" min="0"
+                            max="1" value="1">
                         <input type="text" id="metronome_volume_text" class="inputText" name="metronome" value="100"> %
                         <div class="buttons">
                             <button class="mute" id="metronome_mute" title="ミュート" aria-label="メトロノームのミュート">
@@ -120,16 +122,16 @@
                             <div class="range_label">種類</div>
                             <div class="instrument_type_container">
                                 <label for="vocal_soprano" class="instrument_type_label"><input id="vocal_soprano"
-                                        type="checkbox" name="instrument_type_soprano" class="instrument_type instrument_part_type"
-                                        checked>ボカロ</label>
+                                        type="checkbox" name="instrument_type_soprano"
+                                        class="instrument_type instrument_part_type" checked>ボカロ</label>
                                 <label for="piano_soprano" class="instrument_type_label"><input id="piano_soprano"
                                         type="checkbox" name="instrument_type_soprano"
                                         class="instrument_type instrument_part_type">ピアノ</label>
                             </div>
                         </div>
                         <div class="range_label"><label for="soprano">音量</label></div>
-                        <input type="range" id="soprano" class="inputRange part_volume" name="soprano" step="any" min="0" max="1"
-                            value="1">
+                        <input type="range" id="soprano" class="inputRange part_volume" name="soprano" step="any"
+                            min="0" max="1" value="1">
                         <input type="text" id="soprano_volume_text" class="inputText" name="soprano" value="100"> %
                         <div class="buttons">
                             <button class="mute" id="soprano_mute" title="ミュート" aria-label="ソプラノのミュート">
@@ -151,15 +153,16 @@
                             <div class="range_label">種類</div>
                             <div class="instrument_type_container">
                                 <label for="vocal_alto" class="instrument_type_label"><input id="vocal_alto"
-                                        type="checkbox" name="instrument_type_alto" class="instrument_type instrument_part_type"
-                                        checked>ボカロ</label>
+                                        type="checkbox" name="instrument_type_alto"
+                                        class="instrument_type instrument_part_type" checked>ボカロ</label>
                                 <label for="piano_alto" class="instrument_type_label"><input id="piano_alto"
-                                        type="checkbox" name="instrument_type_alto" class="instrument_type instrument_part_type">ピアノ</label>
+                                        type="checkbox" name="instrument_type_alto"
+                                        class="instrument_type instrument_part_type">ピアノ</label>
                             </div>
                         </div>
                         <div class="range_label"><label for="alto">音量</label></div>
-                        <input type="range" id="alto" class="inputRange part_volume" name="alto" step="any" min="0" max="1"
-                            value="1">
+                        <input type="range" id="alto" class="inputRange part_volume" name="alto" step="any" min="0"
+                            max="1" value="1">
                         <input type="text" id="alto_volume_text" class="inputText" name="alto" value="100"> %
                         <div class="buttons">
                             <button class="mute" id="alto_mute" title="ミュート" aria-label="アルトのミュート">
@@ -181,15 +184,16 @@
                             <div class="range_label">種類</div>
                             <div class="instrument_type_container">
                                 <label for="vocal_tenor" class="instrument_type_label"><input id="vocal_tenor"
-                                        type="checkbox" name="instrument_type_tenor" class="instrument_type instrument_part_type"
-                                        checked>ボカロ</label>
+                                        type="checkbox" name="instrument_type_tenor"
+                                        class="instrument_type instrument_part_type" checked>ボカロ</label>
                                 <label for="piano_tenor" class="instrument_type_label"><input id="piano_tenor"
-                                        type="checkbox" name="instrument_type_tenor" class="instrument_type instrument_part_type">ピアノ</label>
+                                        type="checkbox" name="instrument_type_tenor"
+                                        class="instrument_type instrument_part_type">ピアノ</label>
                             </div>
                         </div>
                         <div class="range_label"><label for="tenor">音量</label></div>
-                        <input type="range" id="tenor" class="inputRange part_volume" name="tenor" step="any" min="0" max="1"
-                            value="1">
+                        <input type="range" id="tenor" class="inputRange part_volume" name="tenor" step="any" min="0"
+                            max="1" value="1">
                         <input type="text" id="tenor_volume_text" class="inputText" name="tenor" value="100"> %
                         <div class="buttons">
                             <button class="mute" id="tenor_mute" title="ミュート" aria-label="テノールのミュート">
@@ -211,15 +215,16 @@
                             <div class="range_label">種類</div>
                             <div class="instrument_type_container">
                                 <label for="vocal_bass" class="instrument_type_label"><input id="vocal_bass"
-                                        type="checkbox" name="instrument_type_bass" class="instrument_type instrument_part_type"
-                                        checked>ボカロ</label>
+                                        type="checkbox" name="instrument_type_bass"
+                                        class="instrument_type instrument_part_type" checked>ボカロ</label>
                                 <label for="piano_bass" class="instrument_type_label"><input id="piano_bass"
-                                        type="checkbox" name="instrument_type_bass" class="instrument_type instrument_part_type">ピアノ</label>
+                                        type="checkbox" name="instrument_type_bass"
+                                        class="instrument_type instrument_part_type">ピアノ</label>
                             </div>
                         </div>
                         <div class="range_label"><label for="bass">音量</label></div>
-                        <input type="range" id="bass" class="inputRange part_volume" name="bass" step="any" min="0" max="1"
-                            value="1">
+                        <input type="range" id="bass" class="inputRange part_volume" name="bass" step="any" min="0"
+                            max="1" value="1">
                         <input type="text" id="bass_volume_text" class="inputText" name="bass" value="100"> %
                         <div class="buttons">
                             <button class="mute" id="bass_mute" title="ミュート" aria-label="バスのミュート">
@@ -314,6 +319,11 @@
                     <p class="lyrics_row" id="41"><span class="bar_num">64</span><span>Uh</span></p>
                     <p class="lyrics_row" id="42"><span class="bar_num">65</span><span>Uh</span></p>
                 </div>
+            </div>
+            <div id="panel3" class="tab_panel">
+                <!-- 楽譜のパネル -->
+                 <a href="./score.html" target="_blank" class="score_btn">別のタブで表示する</a>
+                <iframe id="score" src="./score.html">お使いのブラウザーは、iframeタグに対応してないため楽譜を表示できません。</iframe>
             </div>
         </div>
     </div>

@@ -272,7 +272,7 @@ input[type="radio"] {
 }
 
 .tab_area label {
-    width: 45%;
+    width: 32%;
     display: inline-block;
     padding: 10px 0;
     color: #000;
@@ -649,4 +649,24 @@ span.bar_num {
     font-size: 0.5em;
     margin-right: 1em;
     font-style: italic;
+}
+
+/* ======== 楽譜のiframeのスタイル =========== */
+
+#panel3 {
+    padding: 5px 0;
+}
+
+iframe#score {
+    width: 100%;
+    height: 100vh;
+    border: none;
+}
+
+.score_btn {
+    display: block;
+    width: 100%;
+    font-size: 0.8rem;
+    padding: 0.1rem 0;
+    text-align: center;
 }

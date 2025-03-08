@@ -1,0 +1,28 @@
+@charset "UTF-8";
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Yu Gothic', 'YuGothic',
+        "Hiragino Kaku Gothic Pro", "ヒラギノ角ゴ Pro W3",
+        "メイリオ", "Meiryo",
+        "MS Pゴシック",
+        "Helvetica Neue", "Helvetica",
+        "Arial", sans-serif;
+}
+
+body {
+    font-size: min(18px, 4vw);
+}
+
+img {
+    display: block;
+    width: 100%;
+}
+
+p {
+    margin-top: 5px;
+    text-align: center;
+    font-size: 0.8em;
+}
