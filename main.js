@@ -178,6 +178,7 @@ const handleEnded = function () {
 // ソロを解除する関数
 const releaseSolo = function () {
     if (isSolo) {
+        isSolo = false;
         Object.keys(solo).forEach(key => {
             const targetVolume = $(`#${key}`);
             solo[key] = false;
@@ -530,7 +531,6 @@ $(async function () {
         solo[target] = !solo[target];
         $(this).toggleClass("active");
         if (!(solo["metronome"] || solo["soprano"] || solo["alto"] || solo["tenor"] || solo["bass"])) {
-            isSolo = false;
             releaseSolo();
             return;
         }
