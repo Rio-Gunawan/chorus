@@ -16,9 +16,21 @@
 
     <meta name="robots" content="noindex">
     <meta name="robots" content="nofollow">
+
+    <script src="./library/jquery-3.7.1.min.js" crossorigin="anonymous"></script>
 </head>
 
 <body>
+    <!-- パスワード入力画面 -->
+    <div class="password_screen">
+        <p><label class="password_label" for="password_input">楽譜のパスワードを入力してください。<br>一度入力すれば、14日間有効です。</label></p>
+        <div class="passwrod_wrapper">
+            <input type="text" id="password_input" class="password_input" placeholder="パスワードを入力してください">
+            <button id="check">確認</button>
+        </div>
+        <p class="password_mismatch">パスワードが間違っています。</p>
+    </div>
+
     <img src="./scores/1.jpg" alt="楽譜1枚目">
     <img src="./scores/2.jpg" alt="楽譜2枚目">
     <img src="./scores/3.jpg" alt="楽譜3枚目">
@@ -29,6 +41,7 @@
     <img src="./scores/8.jpg" alt="楽譜8枚目">
     <img src="./scores/9.jpg" alt="楽譜9枚目">
     <p>無断転載厳禁</p>
+    <script src="./score.js"></script>"
 </body>
 
 </html>

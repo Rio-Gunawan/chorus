@@ -26,3 +26,55 @@ p {
     text-align: center;
     font-size: 0.8em;
 }
+
+.password_screen {
+    /*ローディング画面の縦横幅を画面いっぱいになるように指定*/
+    width: 100vw;
+    height: 100vh;
+    /*ローディング画面の表示位置を固定*/
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    background: #555;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    opacity: 1;
+    transition: opacity 0.3s;
+    color: white;
+}
+
+/*ローディング画面を非表示にする*/
+.password_screen.hide {
+    opacity: 0;
+}
+
+.password_screen label {
+    display: block;
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
+#password_input {
+    font-size: 0.8em;
+    padding: 5px;
+    width: 10em;
+}
+
+#check {
+    font-size: 0.8em;
+    padding: 5px 0.5em;
+    margin-left: 10px;
+    color: white;
+    background-color: #888;
+    border: 1px solid white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.password_mismatch {
+    display: none;
+    color: #f48888;
+}
