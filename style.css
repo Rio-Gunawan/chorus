@@ -208,6 +208,10 @@ button#play_and_pause svg {
     cursor: pointer;
 }
 
+.inputRange:disabled {
+    cursor: not-allowed;
+}
+
 /* ツマミ：Chrome, Safari, Edge用 */
 .inputRange::-webkit-slider-thumb {
     -webkit-appearance: none;

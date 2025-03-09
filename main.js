@@ -83,7 +83,7 @@ const getAudioBuffer = async (entries) => {
 };
 
 // 再生関数
-function playSound () {
+function playSound() {
     // Safari用処理
     if (audioContext.state === "interrupted") {
         audioContext.resume().then(() => playSound());
@@ -128,12 +128,12 @@ function playSound () {
 };
 
 // 一時停止関数
-function pauseSound () {
+function pauseSound() {
     audioContext.suspend();
 };
 
 // 再生位置の取得関数
-function getCurrentTime () {
+function getCurrentTime() {
     if (audioContext.state === "running") {
         return audioContext.currentTime - startTime;
     } else {
@@ -142,7 +142,7 @@ function getCurrentTime () {
 };
 
 // 再生終了時の処理
-function handleEnded () {
+function handleEnded() {
     if (getCurrentTime() < audioBuffers.metronome.duration) {
         return; // 再生が終わっていない場合は何もしない
     }
@@ -178,7 +178,7 @@ function handleEnded () {
 };
 
 // ソロを解除する関数
-function releaseSolo () {
+function releaseSolo() {
     if (isSolo) {
         isSolo = false;
         $("#metronome_solo").attr("disabled", false);
@@ -204,7 +204,7 @@ function releaseSolo () {
 };
 
 // 現在のcurrent_lyrics_positionを取得する関数
-function getCurrentLyricsPosition (time) {
+function getCurrentLyricsPosition(time) {
     for (let i = 0; i < lyrics_time.length; i++) {
         const position = lyrics_time[i];
         if (time < position) {
@@ -218,7 +218,7 @@ function getCurrentLyricsPosition (time) {
 };
 
 // 現在のcurrent_lyrics_sectionを取得する関数
-function getCurrentLyricsSection (time) {
+function getCurrentLyricsSection(time) {
     for (let i = 0; i < lyrics_section_time.length; i++) {
         const position = lyrics_section_time[i];
         if (time < position) {
@@ -232,11 +232,9 @@ function getCurrentLyricsSection (time) {
 };
 
 // ボカロとピアノ音源を切り替える関数
-function changeInstrument (target) {
-    const vocalChecked = $(`#vocal_${target}`).prop('checked');
-    const pianoChecked = $(`#piano_${target}`).prop('checked');
-    volumes[target] = vocalChecked ? $(`#${target}`).val() : 0;
-    volumes[`piano_${target}`] = pianoChecked ? $(`#${target}`).val() : 0;
+function changeInstrument(target) {
+    volumes[target] = $(`#${target}`).val() * $(`#${target}_vocal`).val() * $(`#whole_vocal`).val();
+    volumes[`piano_${target}`] = $(`#${target}`).val() * $(`#${target}_piano`).val() * $(`#whole_piano`).val();
 
     if (!isFirstPlay) {
         gainNodes[target].gain.value = volumes[target] * volumes["all"];
@@ -244,8 +242,56 @@ function changeInstrument (target) {
     }
 };
 
+// 楽器タイプが変更された時、詳細設定のバーの設定変更
+function setInstrumentStatus(target) {
+    if ($(`#${target}_vocal`).val() != 1 && $(`#${target}_vocal`).val() != 0) {
+        $(`#${target}_vocal`).data("prev", $(`#${target}_vocal`).val());
+    }
+    if ($(`#${target}_piano`).val() != 1 && $(`#${target}_piano`).val() != 0) {
+        $(`#${target}_piano`).data("prev", $(`#${target}_piano`).val());
+    }
+    if ($(`#${target}_vocal`).val() == 1 && $(`#${target}_piano`).val() == 1) {
+        $(`#${target}_vocal`).data("prev", 1);
+        $(`#${target}_piano`).data("prev", 1);
+    }
+
+    if ($(`#vocal_${target}`).prop('checked')) {
+        $(`#${target}_vocal`).val(1);
+    } else {
+        $(`#${target}_vocal`).val(0);
+    }
+    if ($(`#piano_${target}`).prop('checked')) {
+        $(`#${target}_piano`).val(1);
+    } else {
+        $(`#${target}_piano`).val(0);
+    }
+
+    if ($(`#vocal_${target}`).prop('checked') && $(`#piano_${target}`).prop('checked')) {
+        $(`#${target}_vocal`).attr("disabled", false);
+        $(`#${target}_piano`).attr("disabled", false);
+        $(`#${target}_vocal_volume_text`).attr("disabled", false);
+        $(`#${target}_piano_volume_text`).attr("disabled", false);
+        if ($(`#${target}_vocal`).data("prev") !== undefined) {
+            $(`#${target}_vocal`).val($(`#${target}_vocal`).data("prev"));
+        }
+        if ($(`#${target}_piano`).data("prev") !== undefined) {
+            $(`#${target}_piano`).val($(`#${target}_piano`).data("prev"));
+        }
+    } else {
+        $(`#${target}_vocal`).attr("disabled", true);
+        $(`#${target}_piano`).attr("disabled", true);
+        $(`#${target}_vocal_volume_text`).attr("disabled", true);
+        $(`#${target}_piano_volume_text`).attr("disabled", true);
+    }
+
+    $(`#${target}_vocal`).trigger("input");
+    $(`#${target}_piano`).trigger("input");
+
+    $(`#${target}`).trigger("input");
+}
+
 // 全てボカロまたはピアノモードであれば、全パート共通の設定の欄の種類欄を設定する関数
-function changeInstrumentStatusOfAll () {
+function changeInstrumentStatusOfAll() {
     let isAllVocal = $("#vocal_soprano").prop('checked') && $(`#vocal_alto`).prop('checked') && $(`#vocal_tenor`).prop('checked') && $(`#vocal_bass`).prop('checked');
     let isNoVocal = !($("#vocal_soprano").prop('checked') || $(`#vocal_alto`).prop('checked') || $(`#vocal_tenor`).prop('checked') || $(`#vocal_bass`).prop('checked'));
     let isAllPiano = $("#piano_soprano").prop('checked') && $(`#piano_alto`).prop('checked') && $(`#piano_tenor`).prop('checked') && $(`#piano_bass`).prop('checked');
@@ -455,7 +501,7 @@ $(async function () {
     $("#whole").on("input", function () {
         const volume = $(this).val();
         volumes["all"] = volume;
-        if (isPlaying) {
+        if (!isFirstPlay) {
             Object.keys(gainNodes).forEach(gainNodeKey => {
                 gainNodes[gainNodeKey].gain.value = volumes[gainNodeKey] * volume;
             });
@@ -476,7 +522,7 @@ $(async function () {
             $(this).parents('.setting_panel').removeClass("muted");
         }
         volumes["metronome"] = volume;
-        if (isPlaying) {
+        if (!isFirstPlay) {
             gainNodes.metronome.gain.value = volume * volumes["all"];
         }
     });
@@ -498,6 +544,37 @@ $(async function () {
             $(this).parents('.setting_panel').removeClass("muted");
         }
         changeInstrument(target);
+    });
+
+    // ボカロとピアノのの音量が変更された時の動作
+    $(".instrument_volume").on("input", function () {
+        const id = $(this).attr("id").split('_');
+        const target = id[1] == 'piano' ? 'piano_' + id[0] : id[0];
+        const volume = $(this).val();
+
+        if (id[0] == 'whole') {
+            if (!isFirstPlay) {
+                Object.keys(gainNodes).forEach(gainNodeKey => {
+                    if (id[1] == 'piano') {
+                        if (gainNodeKey.split('_')[0] == 'piano') {
+                            volumes[gainNodeKey] = $(`#${gainNodeKey.split('_')[1]}`).val() * $(`#${gainNodeKey.split('_')[1]}_piano`).val() * volume;
+                            gainNodes[gainNodeKey].gain.value = volumes[gainNodeKey] * volumes["all"];
+                        }
+                    } else {
+                        if (gainNodeKey.split('_')[0] != 'piano' && gainNodeKey != 'metronome') {
+                            volumes[gainNodeKey] = $(`#${gainNodeKey}`).val() * $(`#${gainNodeKey}_vocal`).val() * volume;
+                            gainNodes[gainNodeKey].gain.value = volumes[gainNodeKey] * volumes["all"];
+                        }
+                    }
+                });
+            }
+        } else {
+            volumes[target] = $(`#${id[0]}`).val() * volume * $(`#whole_${id[1]}`).val();
+
+            if (!isFirstPlay) {
+                gainNodes[target].gain.value = volumes[target] * volumes["all"];
+            }
+        }
     });
 
     // ミュートボタンが押された時の動作
@@ -829,11 +906,59 @@ $(async function () {
             $(`#${target}_mute`).trigger('click');
         }
 
+        setInstrumentStatus(target);
+
         changeInstrumentStatusOfAll();
-        $(`#${target}`).trigger("input");
     });
 
     $('input[name="instrument_type"]').on("change", function () {
+        if ($(`#whole_vocal`).val() != 1 && $(`#whole_vocal`).val() != 0) {
+            $(`#whole_vocal`).data("prev", $(`#whole_vocal`).val());
+        }
+        if ($(`#whole_piano`).val() != 1 && $(`#whole_piano`).val() != 0) {
+            $(`#whole_piano`).data("prev", $(`#whole_piano`).val());
+        }
+
+        if ($(`#whole_vocal`).val() == 1 && $(`#whole_piano`).val() == 1) {
+            $(`#whole_vocal`).data("prev", 1);
+            $(`#whole_piano`).data("prev", 1);
+        }
+
+        if ($(`#vocal`).prop('checked') && $(`#piano`).prop('checked')) {
+            $(`#whole_vocal`).attr("disabled", false);
+            $(`#whole_piano`).attr("disabled", false);
+            $(`#whole_vocal_volume_text`).attr("disabled", false);
+            $(`#whole_piano_volume_text`).attr("disabled", false);
+        } else {
+            $(`#whole_vocal`).attr("disabled", true);
+            $(`#whole_piano`).attr("disabled", true);
+            $(`#whole_vocal_volume_text`).attr("disabled", true);
+            $(`#whole_piano_volume_text`).attr("disabled", true);
+        }
+
+        if ($(`#vocal`).prop('checked') && $(`#piano`).prop('checked')) {
+            if ($(`#whole_vocal`).data("prev") !== undefined) {
+                $(`#whole_vocal`).val($(`#whole_vocal`).data("prev"));
+            } else {
+                $(`#whole_vocal`).val(1);
+            }
+            if ($(`#whole_piano`).data("prev") !== undefined) {
+                $(`#whole_piano`).val($(`#whole_piano`).data("prev"));
+            } else {
+                $(`#whole_piano`).val(1);
+            }
+        }
+        if ($(`#vocal`).prop('checked') && !$(`#piano`).prop('checked')) {
+            $(`#whole_vocal`).val(1);
+            $(`#whole_piano`).val(0);
+        }
+        if ($(`#piano`).prop('checked') && !$(`#vocal`).prop('checked')) {
+            $(`#whole_piano`).val(1);
+            $(`#whole_vocal`).val(0);
+        }
+        $(`#whole_vocal`).trigger("input");
+        $(`#whole_piano`).trigger("input");
+
         if ($('#vocal').prop('checked') || $('#piano').prop('checked')) {
             $('input[name="instrument_type_soprano"]').prop('checked', false);
             $('input[name="instrument_type_alto"]').prop('checked', false);
@@ -845,27 +970,27 @@ $(async function () {
             $('#vocal_alto').prop('checked', true);
             $('#vocal_tenor').prop('checked', true);
             $('#vocal_bass').prop('checked', true);
-            changeInstrument("soprano");
-            changeInstrument("alto");
-            changeInstrument("tenor");
-            changeInstrument("bass");
+            setInstrumentStatus("soprano");
+            setInstrumentStatus("alto");
+            setInstrumentStatus("tenor");
+            setInstrumentStatus("bass");
         }
         if ($('#piano').prop('checked')) {
             $('#piano_soprano').prop('checked', true);
             $('#piano_alto').prop('checked', true);
             $('#piano_tenor').prop('checked', true);
             $('#piano_bass').prop('checked', true);
-            changeInstrument("soprano");
-            changeInstrument("alto");
-            changeInstrument("tenor");
-            changeInstrument("bass");
+            setInstrumentStatus("soprano");
+            setInstrumentStatus("alto");
+            setInstrumentStatus("tenor");
+            setInstrumentStatus("bass");
         }
     });
 });
 
 function setRangeStyle(obj) {
     const ratio = (obj.value - obj.min) / (obj.max - obj.min) * 100;
-    $(obj).css("background", `linear-gradient(90deg, ${activeColor} ${ratio}%, ${inactiveColor} ${ratio}%)`);
+    $(obj).css("background", `linear-gradient(90deg, ${$(obj).attr("disabled") ? inactiveColor : activeColor} ${ratio}%, ${inactiveColor} ${ratio}%)`);
 }
 
 function convertTimeFormat(time) {
