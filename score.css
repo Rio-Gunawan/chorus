@@ -41,26 +41,29 @@ p {
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    opacity: 1;
-    transition: opacity 0.3s;
+    visibility: visible;
     color: white;
 }
 
 /*ローディング画面を非表示にする*/
 .password_screen.hide {
-    opacity: 0;
+    visibility: hidden;
+    display: none;
 }
 
 .password_screen label {
     display: block;
+    width: 90%;
     font-size: 1.2em;
-    margin: 10px 0;
+    margin: 10px auto;
 }
 
 #password_input {
     font-size: 0.8em;
     padding: 5px;
     width: 10em;
+    border: 1px solid #9e9e9e;
+    border-radius: 5px;
 }
 
 #check {

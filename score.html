@@ -23,11 +23,13 @@
 <body>
     <!-- パスワード入力画面 -->
     <div class="password_screen">
-        <p><label class="password_label" for="password_input">楽譜のパスワードを入力してください。<br>一度入力すれば、14日間有効です。</label></p>
-        <div class="passwrod_wrapper">
-            <input type="text" id="password_input" class="password_input" placeholder="パスワードを入力してください">
+        <p><label class="password_label" for="password_input">著作権保護のため、楽譜のパスワードを入力してください。一度入力すれば、14日間有効です。</label>
+        </p>
+        <form onsubmit="checkPassword();return false;">
+            <input type="password" id="password_input" class="password_input" placeholder="パスワードを入力してください"
+                autocomplete="on">
             <button id="check">確認</button>
-        </div>
+        </form>
         <p class="password_mismatch">パスワードが間違っています。</p>
     </div>
 
@@ -41,7 +43,7 @@
     <img src="./scores/8.jpg" alt="楽譜8枚目">
     <img src="./scores/9.jpg" alt="楽譜9枚目">
     <p>無断転載厳禁</p>
-    <script src="./score.js"></script>"
+    <script src="./score.js"></script>
 </body>
 
 </html>

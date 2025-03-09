@@ -18,6 +18,21 @@ function getCookie(name) {
     return null;
 }
 
+function checkPassword () {
+    let password = $("#password_input").val();
+
+    password = password.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function (s) {
+        return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+    });
+    password = password.replace(/\s+/g, "");
+    if (correct_password === password) {
+        $(".password_screen").fadeOut(300);
+        setCookie("authenticated", "true", 14); // 認証成功をCookieに保存（14日間有効）
+    } else {
+        $('.password_mismatch').show();
+    }
+}
+
 $(function () {
     // ページ読み込み時にCookieをチェック
     if (getCookie("authenticated") === "true") {
@@ -26,25 +41,12 @@ $(function () {
 
     // パスワードの正誤判定
     $("#check").on("click", function () {
-        let password = $("#password_input").val();
-
-        password = password.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function (s) {
-            return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
-        });
-        password = password.replace(/\s+/g, "");
-        if (correct_password === password) {
-            $(".password_screen").addClass("hide");
-            setCookie("authenticated", "true", 14); // 認証成功をCookieに保存（14日間有効）
-        } else {
-            $('.password_mismatch').show();
-        }
+        checkPassword();
     });
 
     // エンターキーで正誤判定を行う
-    $("input[type=text]").on('keyup', function (e) {
-        if (e.key === 'Enter') {
-            $('#check').trigger('click');
-        }
+    $("input[type=text]").on('keyup', function () {
+        checkPassword();
     });
 
     // パスワード欄を変更したら、エラーメッセージを削除

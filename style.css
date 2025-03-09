@@ -654,7 +654,12 @@ iframe#score {
 .score_btn {
     display: block;
     width: 100%;
+    color: #3747b1;
     font-size: 0.8rem;
     padding: 0.1rem 0;
     text-align: center;
+}
+
+.score_btn:visited {
+    color: #9a379a;
 }
