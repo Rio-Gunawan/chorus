@@ -707,6 +707,102 @@ $(async function () {
                 $("#bass").val(1);
                 $("#bass").trigger("input");
                 break;
+            case "11":
+                if ($("#with_metronome").prop("checked")) {
+                    $("#metronome").val(0.5);
+                    $("#metronome").trigger("input");
+                }
+                $("#soprano").val(0.5);
+                $("#soprano").trigger("input");
+                $("#alto").val(1);
+                $("#alto").trigger("input");
+                $("#tenor").val(1);
+                $("#tenor").trigger("input");
+                $("#bass").val(1);
+                $("#bass").trigger("input");
+                break;
+            case "12":
+                if ($("#with_metronome").prop("checked")) {
+                    $("#metronome").val(0.5);
+                    $("#metronome").trigger("input");
+                }
+                $("#soprano").val(1);
+                $("#soprano").trigger("input");
+                $("#alto").val(0.5);
+                $("#alto").trigger("input");
+                $("#tenor").val(1);
+                $("#tenor").trigger("input");
+                $("#bass").val(1);
+                $("#bass").trigger("input");
+                break;
+            case "13":
+                if ($("#with_metronome").prop("checked")) {
+                    $("#metronome").val(0.5);
+                    $("#metronome").trigger("input");
+                }
+                $("#soprano").val(1);
+                $("#soprano").trigger("input");
+                $("#alto").val(1);
+                $("#alto").trigger("input");
+                $("#tenor").val(0.5);
+                $("#tenor").trigger("input");
+                $("#bass").val(1);
+                $("#bass").trigger("input");
+                break;
+            case "14":
+                if ($("#with_metronome").prop("checked")) {
+                    $("#metronome").val(0.5);
+                    $("#metronome").trigger("input");
+                }
+                $("#soprano").val(1);
+                $("#soprano").trigger("input");
+                $("#alto").val(1);
+                $("#alto").trigger("input");
+                $("#tenor").val(1);
+                $("#tenor").trigger("input");
+                $("#bass").val(0.5);
+                $("#bass").trigger("input");
+                break;
+            case "15":
+                $("#soprano").val(0);
+                $("#soprano").trigger("input");
+                $("#alto").val(1);
+                $("#alto").trigger("input");
+                $("#tenor").val(1);
+                $("#tenor").trigger("input");
+                $("#bass").val(1);
+                $("#bass").trigger("input");
+                break;
+            case "16":
+                $("#soprano").val(1);
+                $("#soprano").trigger("input");
+                $("#alto").val(0);
+                $("#alto").trigger("input");
+                $("#tenor").val(1);
+                $("#tenor").trigger("input");
+                $("#bass").val(1);
+                $("#bass").trigger("input");
+                break;
+            case "17":
+                $("#soprano").val(1);
+                $("#soprano").trigger("input");
+                $("#alto").val(1);
+                $("#alto").trigger("input");
+                $("#tenor").val(0);
+                $("#tenor").trigger("input");
+                $("#bass").val(1);
+                $("#bass").trigger("input");
+                break;
+            case "18":
+                $("#soprano").val(1);
+                $("#soprano").trigger("input");
+                $("#alto").val(1);
+                $("#alto").trigger("input");
+                $("#tenor").val(1);
+                $("#tenor").trigger("input");
+                $("#bass").val(0);
+                $("#bass").trigger("input");
+                break;
             default:
                 break;
         }
