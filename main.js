@@ -266,7 +266,7 @@ function changeInstrumentStatusOfAll () {
 // 歌詞やセクションをタップしたときなど、指定した位置に歌詞を移動する関数
 function moveSoundTo(newTime) {
     startTime = audioContext.currentTime - newTime;
-    currentTime.text(convertTimeFormat(newTime));
+    $("#current_time").text(convertTimeFormat(newTime));
     if (isFirstPlay) {
         sources = Object.entries(audioBuffers).map(([name, buffer]) => {
             let source = audioContext.createBufferSource();    // 再生用のノードを作成
