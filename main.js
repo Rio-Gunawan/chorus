@@ -238,7 +238,7 @@ function changeInstrument (target) {
     volumes[target] = vocalChecked ? $(`#${target}`).val() : 0;
     volumes[`piano_${target}`] = pianoChecked ? $(`#${target}`).val() : 0;
 
-    if (isPlaying) {
+    if (!isFirstPlay) {
         gainNodes[target].gain.value = volumes[target] * volumes["all"];
         gainNodes[`piano_${target}`].gain.value = volumes[`piano_${target}`] * volumes["all"];
     }
