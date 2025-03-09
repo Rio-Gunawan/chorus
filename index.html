@@ -101,6 +101,17 @@
                             メトロノーム入り
                         </label>
                     </div>
+                    <details>
+                        <summary>詳細設定</summary>
+                        <div class="content">
+                            <div class="range_label"><label for="whole_vocal">ボカロの音量</label></div>
+                            <input type="range" id="whole_vocal" class="inputRange instrument_volume" name="whole" step="any" min="0" max="1" value="1">
+                            <input type="text" id="whole_vocal_volume_text" class="inputText" name="whole" value="100"> %
+                            <div class="range_label"><label for="whole_piano">ピアノの音量</label></div>
+                            <input type="range" id="whole_piano" class="inputRange instrument_volume" name="whole" step="any" min="0" max="1" value="1">
+                            <input type="text" id="whole_piano_volume_text" class="inputText" name="whole" value="100"> %
+                        </div>
+                    </details>
                 </section>
                 <h2>各パート個別での設定</h2>
                 <section class="part_setting">
@@ -154,6 +165,19 @@
                             </button>
                             <button class="solo" id="soprano_solo" title="ソロ" aria-label="ソプラノのソロ">ソロ</button>
                         </div>
+                        <details>
+                            <summary>詳細設定</summary>
+                            <div class="content">
+                                <div class="range_label"><label for="soprano_vocal">ボカロの音量</label></div>
+                                <input type="range" id="soprano_vocal" class="inputRange instrument_volume" name="soprano" step="any" min="0"
+                                    max="1" value="1">
+                                <input type="text" id="soprano_vocal_volume_text" class="inputText" name="soprano" value="100"> %
+                                <div class="range_label"><label for="soprano_piano">ピアノの音量</label></div>
+                                <input type="range" id="soprano_piano" class="inputRange instrument_volume" name="soprano" step="any" min="0"
+                                    max="1" value="1">
+                                <input type="text" id="soprano_piano_volume_text" class="inputText" name="soprano" value="100"> %
+                            </div>
+                        </details>
                     </section>
                     <section class="part setting_panel">
                         <h3><label for="alto">アルト</label></h3>
@@ -185,6 +209,19 @@
                             </button>
                             <button class="solo" id="alto_solo" title="ソロ" aria-label="アルトのソロ">ソロ</button>
                         </div>
+                        <details>
+                            <summary>詳細設定</summary>
+                            <div class="content">
+                                <div class="range_label"><label for="alto_vocal">ボカロの音量</label></div>
+                                <input type="range" id="alto_vocal" class="inputRange instrument_volume" name="alto" step="any" min="0"
+                                    max="1" value="1">
+                                <input type="text" id="alto_vocal_volume_text" class="inputText" name="alto" value="100"> %
+                                <div class="range_label"><label for="alto_piano">ピアノの音量</label></div>
+                                <input type="range" id="alto_piano" class="inputRange instrument_volume" name="alto" step="any" min="0"
+                                    max="1" value="1">
+                                <input type="text" id="alto_piano_volume_text" class="inputText" name="alto" value="100"> %
+                            </div>
+                        </details>
                     </section>
                     <section class="part setting_panel">
                         <h3><label for="tenor">テノール</label></h3>
@@ -216,6 +253,19 @@
                             </button>
                             <button class="solo" id="tenor_solo" title="ソロ" aria-label="テノールのソロ">ソロ</button>
                         </div>
+                        <details>
+                            <summary>詳細設定</summary>
+                            <div class="content">
+                                <div class="range_label"><label for="tenor_vocal">ボカロの音量</label></div>
+                                <input type="range" id="tenor_vocal" class="inputRange instrument_volume" name="tenor" step="any" min="0"
+                                    max="1" value="1">
+                                <input type="text" id="tenor_vocal_volume_text" class="inputText" name="tenor" value="100"> %
+                                <div class="range_label"><label for="tenor_piano">ピアノの音量</label></div>
+                                <input type="range" id="tenor_piano" class="inputRange instrument_volume" name="tenor" step="any" min="0"
+                                    max="1" value="1">
+                                <input type="text" id="tenor_piano_volume_text" class="inputText" name="tenor" value="100"> %
+                            </div>
+                        </details>
                     </section>
                     <section class="part setting_panel">
                         <h3><label for="bass">バス</label></h3>
@@ -247,6 +297,19 @@
                             </button>
                             <button class="solo" id="bass_solo" title="ソロ" aria-label="バスのソロ">ソロ</button>
                         </div>
+                        <details>
+                            <summary>詳細設定</summary>
+                            <div class="content">
+                                <div class="range_label"><label for="bass_vocal">ボカロの音量</label></div>
+                                <input type="range" id="bass_vocal" class="inputRange instrument_volume" name="bass" step="any" min="0"
+                                    max="1" value="1">
+                                <input type="text" id="bass_vocal_volume_text" class="inputText" name="bass" value="100"> %
+                                <div class="range_label"><label for="bass_piano">ピアノの音量</label></div>
+                                <input type="range" id="bass_piano" class="inputRange instrument_volume" name="bass" step="any" min="0"
+                                    max="1" value="1">
+                                <input type="text" id="bass_piano_volume_text" class="inputText" name="bass" value="100"> %
+                            </div>
+                        </details>
                     </section>
                 </section>
                 <footer>

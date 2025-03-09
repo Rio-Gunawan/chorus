@@ -925,7 +925,7 @@ $(function () {
     $("#metronome").on("input", function () {
         $("#metronome_volume_text").val(Math.floor($(this).val() * 100));
     });
-    $(".part_volume").on("input", function () {
+    $(".part_volume, .instrument_volume").on("input", function () {
         const target = $(this).attr("id");
         $(`#${target}_volume_text`).val(Math.floor($(this).val() * 100));
     });
