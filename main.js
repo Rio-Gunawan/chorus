@@ -83,7 +83,7 @@ const getAudioBuffer = async (entries) => {
 };
 
 // 再生関数
-const playSound = function () {
+function playSound () {
     // Safari用処理
     if (audioContext.state === "interrupted") {
         audioContext.resume().then(() => playSound());
@@ -128,12 +128,12 @@ const playSound = function () {
 };
 
 // 一時停止関数
-const pauseSound = function () {
+function pauseSound () {
     audioContext.suspend();
 };
 
 // 再生位置の取得関数
-const getCurrentTime = function () {
+function getCurrentTime () {
     if (audioContext.state === "running") {
         return audioContext.currentTime - startTime;
     } else {
@@ -142,7 +142,7 @@ const getCurrentTime = function () {
 };
 
 // 再生終了時の処理
-const handleEnded = function () {
+function handleEnded () {
     if (getCurrentTime() < audioBuffers.metronome.duration) {
         return; // 再生が終わっていない場合は何もしない
     }
@@ -178,7 +178,7 @@ const handleEnded = function () {
 };
 
 // ソロを解除する関数
-const releaseSolo = function () {
+function releaseSolo () {
     if (isSolo) {
         isSolo = false;
         $("#metronome_solo").attr("disabled", false);
@@ -204,7 +204,7 @@ const releaseSolo = function () {
 };
 
 // 現在のcurrent_lyrics_positionを取得する関数
-const getCurrentLyricsPosition = function (time) {
+function getCurrentLyricsPosition (time) {
     for (let i = 0; i < lyrics_time.length; i++) {
         const position = lyrics_time[i];
         if (time < position) {
@@ -218,7 +218,7 @@ const getCurrentLyricsPosition = function (time) {
 };
 
 // 現在のcurrent_lyrics_sectionを取得する関数
-const getCurrentLyricsSection = function (time) {
+function getCurrentLyricsSection (time) {
     for (let i = 0; i < lyrics_section_time.length; i++) {
         const position = lyrics_section_time[i];
         if (time < position) {
@@ -232,7 +232,7 @@ const getCurrentLyricsSection = function (time) {
 };
 
 // ボカロとピアノ音源を切り替える関数
-const changeInstrument = function (target) {
+function changeInstrument (target) {
     const vocalChecked = $(`#vocal_${target}`).prop('checked');
     const pianoChecked = $(`#piano_${target}`).prop('checked');
     volumes[target] = vocalChecked ? $(`#${target}`).val() : 0;
@@ -245,7 +245,7 @@ const changeInstrument = function (target) {
 };
 
 // 全てボカロまたはピアノモードであれば、全パート共通の設定の欄の種類欄を設定する関数
-const changeInstrumentStatusOfAll = function () {
+function changeInstrumentStatusOfAll () {
     let isAllVocal = $("#vocal_soprano").prop('checked') && $(`#vocal_alto`).prop('checked') && $(`#vocal_tenor`).prop('checked') && $(`#vocal_bass`).prop('checked');
     let isNoVocal = !($("#vocal_soprano").prop('checked') || $(`#vocal_alto`).prop('checked') || $(`#vocal_tenor`).prop('checked') || $(`#vocal_bass`).prop('checked'));
     let isAllPiano = $("#piano_soprano").prop('checked') && $(`#piano_alto`).prop('checked') && $(`#piano_tenor`).prop('checked') && $(`#piano_bass`).prop('checked');
