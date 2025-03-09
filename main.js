@@ -363,26 +363,52 @@ $(async function () {
         const newTime = lyrics_time[$(this).attr("id")];
         startTime = audioContext.currentTime - newTime;
         currentTime.text(convertTimeFormat(newTime));
-        sources.forEach((source, index) => {
-            source.stop();
-            let newSource = audioContext.createBufferSource();
-            newSource.buffer = source.buffer;
-            newSource.connect(gainNodes[Object.keys(audioBuffers)[index]]).connect(audioContext.destination);
-            newSource.start(0, newTime);
-            newSource.onended = handleEnded; // 再生終了時の処理を設定
-            sources[index] = newSource;
-            current_lyrics_position = getCurrentLyricsPosition(newTime);
-            $(".lyrics_row").removeClass("active");
-            current_lyrics_section = getCurrentLyricsSection(newTime);
-            $(".block").removeClass("active");
-        });
-        if (!isPlaying) {
+        if (isFirstPlay) {
+            sources = Object.entries(audioBuffers).map(([name, buffer]) => {
+                let source = audioContext.createBufferSource();    // 再生用のノードを作成
+                let gainNode = audioContext.createGain();          // 個別のGainNodeを作成
+                source.buffer = buffer;    // オーディオバッファをノードに設定
+                source.connect(gainNode).connect(audioContext.destination);    // 出力先設定
+                source.start(0, newTime);    // 再生
+                source.onended = handleEnded; // 再生終了時の処理を設定
+                gainNodes[name] = gainNode;   // GainNodeを保存
+                current_lyrics_position = getCurrentLyricsPosition(newTime);
+                $(".lyrics_row").removeClass("active");
+                current_lyrics_section = getCurrentLyricsPosition(newTime);
+                $(".block").removeClass("active");
+                return source;
+            });
+
+            // 音量を設定
+            Object.keys(gainNodes).forEach(gainNodeKey => {
+                gainNodes[gainNodeKey].gain.value = volumes[gainNodeKey] * volumes["all"];
+            });
             isFirstPlay = false;
             isPlaying = true;
             $("#play").toggle();
             $("#pause").toggle();
             $("#play_and_pause").attr("title", "一時停止").attr("aria-label", "一時停止");
-            playSound();
+        } else {
+            sources.forEach((source, index) => {
+                source.stop();
+                let newSource = audioContext.createBufferSource();
+                newSource.buffer = source.buffer;
+                newSource.connect(gainNodes[Object.keys(audioBuffers)[index]]).connect(audioContext.destination);
+                newSource.start(0, newTime);
+                newSource.onended = handleEnded; // 再生終了時の処理を設定
+                sources[index] = newSource;
+                current_lyrics_position = getCurrentLyricsPosition(newTime);
+                $(".lyrics_row").removeClass("active");
+                current_lyrics_section = getCurrentLyricsSection(newTime);
+                $(".block").removeClass("active");
+            });
+            if (!isPlaying) {
+                isPlaying = true;
+                $("#play").toggle();
+                $("#pause").toggle();
+                $("#play_and_pause").attr("title", "一時停止").attr("aria-label", "一時停止");
+                playSound();
+            }
         }
     });
 
