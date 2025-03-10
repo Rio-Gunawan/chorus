@@ -307,6 +307,7 @@ function changeInstrumentStatusOfAll() {
         $("#vocal").prop('checked', false);
         $("#piano").prop('checked', true);
     }
+    $('input[name="instrument_type"]').trigger("change");
 };
 
 // 歌詞やセクションをタップしたときなど、指定した位置に歌詞を移動する関数
@@ -910,30 +911,29 @@ $(async function () {
             $(`#whole_piano`).data("prev", 1);
         }
 
-        if ($(`#vocal`).prop('checked') && $(`#piano`).prop('checked')) {
-            $(`#whole_vocal`).attr("disabled", false);
-            $(`#whole_piano`).attr("disabled", false);
-            $(`#whole_vocal_volume_text`).attr("disabled", false);
-            $(`#whole_piano_volume_text`).attr("disabled", false);
-        } else {
+        if ($(`#vocal`).prop('checked') ^ $(`#piano`).prop('checked')) {
             $(`#whole_vocal`).attr("disabled", true);
             $(`#whole_piano`).attr("disabled", true);
             $(`#whole_vocal_volume_text`).attr("disabled", true);
             $(`#whole_piano_volume_text`).attr("disabled", true);
+        } else {
+            $(`#whole_vocal`).attr("disabled", false);
+            $(`#whole_piano`).attr("disabled", false);
+            $(`#whole_vocal_volume_text`).attr("disabled", false);
+            $(`#whole_piano_volume_text`).attr("disabled", false);
         }
 
-        if ($(`#vocal`).prop('checked') && $(`#piano`).prop('checked')) {
-            if ($(`#whole_vocal`).data("prev") !== undefined) {
-                $(`#whole_vocal`).val($(`#whole_vocal`).data("prev"));
-            } else {
-                $(`#whole_vocal`).val(1);
-            }
-            if ($(`#whole_piano`).data("prev") !== undefined) {
-                $(`#whole_piano`).val($(`#whole_piano`).data("prev"));
-            } else {
-                $(`#whole_piano`).val(1);
-            }
+        if ($(`#whole_vocal`).data("prev") !== undefined) {
+            $(`#whole_vocal`).val($(`#whole_vocal`).data("prev"));
+        } else {
+            $(`#whole_vocal`).val(1);
         }
+        if ($(`#whole_piano`).data("prev") !== undefined) {
+            $(`#whole_piano`).val($(`#whole_piano`).data("prev"));
+        } else {
+            $(`#whole_piano`).val(1);
+        }
+
         if ($(`#vocal`).prop('checked') && !$(`#piano`).prop('checked')) {
             $(`#whole_vocal`).val(1);
             $(`#whole_piano`).val(0);
