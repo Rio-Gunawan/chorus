@@ -188,16 +188,19 @@ function releaseSolo() {
             if (mute[key]) {
                 targetVolume.val(0);
             } else {
-                if (targetVolume.data("prev") === undefined) {
-                    targetVolume.val(1);
-                } else {
-                    targetVolume.val(targetVolume.data("prev"));
+                if (key != 'metronome') {
+                    if (targetVolume.data("prev") === undefined) {
+                        targetVolume.val(1);
+                    } else {
+                        targetVolume.val(targetVolume.data("prev"));
+                    }
                 }
             }
             targetVolume.trigger("input");
             $(`#${key}_solo`).removeClass("active");
             $(`#${key}_mute`).attr("disabled", false);
             $(`#${key}`).attr("disabled", false);
+            setRangeStyle($(`#${key}`)[0]);
             $(`#${key}_volume_text`).attr("disabled", false);
         });
     }
@@ -633,6 +636,7 @@ $(async function () {
                     $(`#${key}_mute`).removeClass("active");
                     $(`#${key}_mute`).attr("disabled", true);
                     $(`#${key}`).attr("disabled", false);
+                    setRangeStyle($(`#${key}`)[0]);
                     $(`#${key}_volume_text`).attr("disabled", false);
                     $(`#${key}_mute`).parents('.setting_panel').removeClass("muted");
                 }
