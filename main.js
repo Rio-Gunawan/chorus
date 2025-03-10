@@ -531,7 +531,9 @@ $(async function () {
         } else if (volumes[target] == 0) {
             mute[target] = false;
             $(`#${target}_mute`).removeClass("active");
-            $(this).parents('.setting_panel').removeClass("muted");
+            if ($(`#vocal_${target}`).prop("checked") || $(`#piano_${target}`).prop("checked")) {
+                $(this).parents('.setting_panel').removeClass("muted");
+            }
         }
         changeInstrument(target);
     });
@@ -571,9 +573,17 @@ $(async function () {
     $(".mute").on("click", function () {
         const target = $(this).attr("id").replace("_mute", "");
         const targetVolume = $(`#${target}`);
-        $(this).toggleClass("active");
-        $(this).parents('.setting_panel').toggleClass("muted");
         mute[target] = !mute[target];
+        $(this).toggleClass("active");
+        if (mute[target]) {
+            $(this).parents('.setting_panel').addClass("muted");
+        } else {
+            $(this).parents('.setting_panel').removeClass("muted");
+            if (!$(`#vocal_${target}`).prop("checked") && !$(`#piano_${target}`).prop("checked")) {
+                $(this).parents('.setting_panel').addClass("muted");
+            }
+        }
+
         if (targetVolume.val() === "0") {
             if (targetVolume.data("prev") === undefined) {
                 targetVolume.val(1);
@@ -609,38 +619,39 @@ $(async function () {
             }
         }
         Object.keys(solo).forEach(key => {
-            if (key !== "metronome") {
-                const targetVolume = $(`#${key}`);
-                if (!solo[key]) {
-                    if (targetVolume.val() !== "0") {
-                        targetVolume.data("prev", targetVolume.val());
-                    }
-                    targetVolume.val(0);
-                    targetVolume.trigger("input");
-                    $(`#${key}_mute`).addClass("active");
-                    $(`#${key}_mute`).attr("disabled", true);
-                    $(`#${key}`).attr("disabled", true);
-                    $(`#${key}_volume_text`).attr("disabled", true);
-                    $(`#${key}_mute`).parents('.setting_panel').addClass("muted");
-                } else {
-                    if (targetVolume.val() === "0") {
-                        if (targetVolume.data("prev") !== undefined) {
-                            targetVolume.val(targetVolume.data("prev"));
-                        } else {
-                            targetVolume.val(1);
-                        }
+            const targetVolume = $(`#${key}`);
+            if (!solo[key] && key !== "metronome") {
+                if (targetVolume.val() !== "0") {
+                    targetVolume.data("prev", targetVolume.val());
+                }
+                targetVolume.val(0);
+                targetVolume.trigger("input");
+                $(`#${key}_mute`).addClass("active");
+                $(`#${key}_mute`).attr("disabled", true);
+                $(`#${key}`).attr("disabled", true);
+                $(`#${key}_volume_text`).attr("disabled", true);
+                $(`#${key}_mute`).parents('.setting_panel').addClass("muted");
+            } else {
+                if (targetVolume.val() === "0") {
+                    if (targetVolume.data("prev") !== undefined) {
+                        targetVolume.val(targetVolume.data("prev"));
                     } else {
-                        targetVolume.data("prev", targetVolume.val());
+                        targetVolume.val(1);
                     }
-                    targetVolume.trigger("input");
-                    $(`#${key}_mute`).removeClass("active");
-                    $(`#${key}_mute`).attr("disabled", true);
-                    $(`#${key}`).attr("disabled", false);
-                    setRangeStyle($(`#${key}`)[0]);
-                    $(`#${key}_volume_text`).attr("disabled", false);
+                } else {
+                    targetVolume.data("prev", targetVolume.val());
+                }
+                targetVolume.trigger("input");
+                $(`#${key}_mute`).removeClass("active");
+                $(`#${key}_mute`).attr("disabled", true);
+                $(`#${key}`).attr("disabled", false);
+                setRangeStyle($(`#${key}`)[0]);
+                $(`#${key}_volume_text`).attr("disabled", false);
+                if (!$(`#vocal_${key}`).prop("checked") && !$(`#piano_${key}`).prop("checked") && key !== "metronome") {
                     $(`#${key}_mute`).parents('.setting_panel').removeClass("muted");
                 }
             }
+
         });
     });
 
@@ -893,8 +904,12 @@ $(async function () {
 
         $("#vocal").prop("checked", false);
         $("#piano").prop("checked", false);
-        if (!$(`#vocal_${target}`).prop('checked') && !$(`#piano_${target}`).prop('checked')) {
-            $(`#${target}_mute`).trigger('click');
+        if (!$(`#vocal_${target}`).prop('checked') && !$(`#piano_${target}`).prop('checked') && !mute[target] && !isSolo) {
+            $(this).parents('.setting_panel').addClass("muted");
+        } else {
+            if (!mute[target] && !isSolo) {
+                $(this).parents('.setting_panel').removeClass("muted");
+            }
         }
 
         setInstrumentStatus(target);
@@ -960,21 +975,17 @@ $(async function () {
             $('#vocal_alto').prop('checked', true);
             $('#vocal_tenor').prop('checked', true);
             $('#vocal_bass').prop('checked', true);
-            setInstrumentStatus("soprano");
-            setInstrumentStatus("alto");
-            setInstrumentStatus("tenor");
-            setInstrumentStatus("bass");
         }
         if ($('#piano').prop('checked')) {
             $('#piano_soprano').prop('checked', true);
             $('#piano_alto').prop('checked', true);
             $('#piano_tenor').prop('checked', true);
             $('#piano_bass').prop('checked', true);
-            setInstrumentStatus("soprano");
-            setInstrumentStatus("alto");
-            setInstrumentStatus("tenor");
-            setInstrumentStatus("bass");
         }
+        setInstrumentStatus("soprano");
+        setInstrumentStatus("alto");
+        setInstrumentStatus("tenor");
+        setInstrumentStatus("bass");
     });
 });
 
