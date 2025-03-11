@@ -396,6 +396,7 @@ select {
     color: black;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 0.9em;
 }
 
 input[type="checkbox"] {
