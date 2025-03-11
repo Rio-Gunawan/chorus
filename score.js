@@ -18,18 +18,26 @@ function getCookie(name) {
     return null;
 }
 
-function checkPassword () {
-    let password = $("#password_input").val();
-
-    password = password.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function (s) {
+// 文字列を正規化する関数
+function normalizeString(str) {
+    // 全角英数字を半角に変換
+    str = str.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function (s) {
         return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
     });
-    password = password.replace(/\s+/g, "");
+    // 前後の空白を削除
+    str = str.trim();
+    return str;
+}
+
+function checkPassword() {
+    let password = document.getElementById("password_input").value;
+
+    password = normalizeString(password);
     if (correct_password === password) {
-        $(".password_screen").fadeOut(300);
+        document.querySelector(".password_screen").style.display = "none";
         setCookie("authenticated", "true", 14); // 認証成功をCookieに保存（14日間有効）
     } else {
-        $('.password_mismatch').show();
+        document.querySelector('.password_mismatch').style.display = "block";
     }
 }
 

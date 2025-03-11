@@ -57,29 +57,55 @@ let audioBuffers = {};
 
 // 音声ソース読み込み関数
 const getAudioBuffer = async (entries) => {
-    const promises = [];    // 読み込み完了通知用
-    const buffers = {};        // オーディオバッファ格納用
+    const promises = []; // 読み込み完了通知用
+    const buffers = {}; // オーディオバッファ格納用
+    const errorList = []; // エラー一覧
 
     entries.forEach((entry) => {
-        const promise = new Promise((resolve) => {
-            const [name, url] = entry;    // プロパティ名、ファイルのURLに分割
+        const promise = new Promise((resolve, reject) => { // エラー発生時にrejectする処理を追加
+            const [name, url] = entry; // プロパティ名、ファイルのURLに分割
 
             // 音声ソース毎に非同期で読み込んでいく
             fetch(url)
-                .then(response => response.blob())    // ファイル生データ
-                .then(data => data.arrayBuffer())    // ArrayBufferとして取得
+                .then(response => {
+                    if (!response.ok) {
+                        reject(new Error(`読み込み時にHTTPエラーが発生しました。 status: ${response.status} for ${name}`)); // HTTPエラーをreject
+                    }
+                    return response.blob();
+                }) // ファイル生データ
+                .then(data => data.arrayBuffer()) // ArrayBufferとして取得
                 .then(arrayBuffer => {
                     // ArrayBufferを音声データに戻してオブジェクト配列に格納する
                     audioContext.decodeAudioData(arrayBuffer, function (audioBuffer) {
                         buffers[name] = audioBuffer;
-                        resolve();    // 読み込み完了通知をpromiseに送る
+                        resolve(); // 読み込み完了通知をpromiseに送る
+                    }, (error) => {
+                        reject(new Error(`再生準備中にエラーが発生しました。 for ${name}: ${error.message}`)); // デコードエラーをreject
                     });
+                })
+                .catch(error => {
+                    reject(error); // fetchまたはデコードエラーをreject
                 });
         });
-        promises.push(promise);        // 現在実行中のPromiseを格納しておく
+        promises.push(promise); // 現在実行中のPromiseを格納しておく
     });
-    await Promise.all(promises);    // 全ての音声ソース読み込みが完了してから
-    return buffers;                    // オーディオバッファを返す
+
+    try {
+        await Promise.all(promises); // 全ての音声ソース読み込みが完了してから
+    } catch (error) {
+        errorList.push(error);
+    }
+
+    if (errorList.length > 0) {
+        // エラーが発生した場合、エラー内容をコンソールに表示し、空のオブジェクトを返す
+        errorList.forEach(error => alert(error));
+        // エラーが発生したため、ローディング画面を非表示にする
+        const loading = document.querySelector(".loading");
+        loading.classList.add("loaded");
+        return {};
+    } else {
+        return buffers; // オーディオバッファを返す
+    }
 };
 
 // 再生関数
@@ -104,9 +130,16 @@ function playSound() {
             let gainNode = audioContext.createGain();          // 個別のGainNodeを作成
             source.buffer = buffer;    // オーディオバッファをノードに設定
             source.connect(gainNode).connect(audioContext.destination);    // 出力先設定
-            source.start(0, newTime);    // 再生
             source.onended = handleEnded; // 再生終了時の処理を設定
             gainNodes[name] = gainNode;   // GainNodeを保存
+
+            // 再生時のエラーをキャッチ
+            try {
+                source.start(0, newTime); // 再生開始、エラーを発生させる可能性がある
+            } catch (error) {
+                alert(`再生に失敗しました ${name}:`, error);
+                // 再生エラー時の処理
+            }
             current_lyrics_position = getCurrentLyricsPosition(newTime);
             $(".lyrics_row").removeClass("active");
             current_lyrics_section = getCurrentLyricsPosition(newTime);
@@ -116,9 +149,7 @@ function playSound() {
         });
 
         // 音量を設定
-        Object.keys(gainNodes).forEach(gainNodeKey => {
-            gainNodes[gainNodeKey].gain.value = volumes[gainNodeKey] * volumes["all"];
-        });
+        applyVolumes();
         isFirstPlay = false;
     } else {
         if (audioContext.state === "suspended") {
@@ -164,9 +195,7 @@ function handleEnded() {
             return source;
         });
         // 音量を設定
-        Object.keys(gainNodes).forEach(gainNodeKey => {
-            gainNodes[gainNodeKey].gain.value = volumes[gainNodeKey] * volumes["all"];
-        });
+        applyVolumes();
     } else {
         isPlaying = false;
         isFirstPlay = true;
@@ -240,8 +269,8 @@ function changeInstrument(target) {
     volumes[`piano_${target}`] = $(`#${target}`).val() * $(`#${target}_piano`).val() * $(`#whole_piano`).val();
 
     if (!isFirstPlay) {
-        gainNodes[target].gain.value = volumes[target] * volumes["all"];
-        gainNodes[`piano_${target}`].gain.value = volumes[`piano_${target}`] * volumes["all"];
+        setGainNodeVolume(gainNodes[target], volumes[target] * volumes["all"]);
+        setGainNodeVolume(gainNodes[`piano_${target}`], volumes[`piano_${target}`] * volumes["all"]);
     }
 };
 
@@ -334,9 +363,7 @@ function moveSoundTo(newTime) {
         });
 
         // 音量を設定
-        Object.keys(gainNodes).forEach(gainNodeKey => {
-            gainNodes[gainNodeKey].gain.value = volumes[gainNodeKey] * volumes["all"];
-        });
+        applyVolumes();
         isFirstPlay = false;
         isPlaying = true;
         $("#play").toggle();
@@ -364,6 +391,18 @@ function moveSoundTo(newTime) {
             playSound();
         }
     }
+}
+
+// 音量設定関数
+function setGainNodeVolume(gainNode, volume) {
+    gainNode.gain.value = volume;
+}
+
+// 音量設定適用関数
+function applyVolumes() {
+    Object.keys(gainNodes).forEach(gainNodeKey => {
+        setGainNodeVolume(gainNodes[gainNodeKey], volumes[gainNodeKey] * volumes.all);
+    });
 }
 
 $(async function () {
@@ -492,9 +531,7 @@ $(async function () {
         const volume = $(this).val();
         volumes["all"] = volume;
         if (!isFirstPlay) {
-            Object.keys(gainNodes).forEach(gainNodeKey => {
-                gainNodes[gainNodeKey].gain.value = volumes[gainNodeKey] * volume;
-            });
+            applyVolumes();
         }
     });
 
@@ -513,7 +550,7 @@ $(async function () {
         }
         volumes["metronome"] = volume;
         if (!isFirstPlay) {
-            gainNodes.metronome.gain.value = volume * volumes["all"];
+            setGainNodeVolume(gainNodes.metronome, volume * volumes["all"]);
         }
     });
 
@@ -550,12 +587,12 @@ $(async function () {
                     if (id[1] == 'piano') {
                         if (gainNodeKey.split('_')[0] == 'piano') {
                             volumes[gainNodeKey] = $(`#${gainNodeKey.split('_')[1]}`).val() * $(`#${gainNodeKey.split('_')[1]}_piano`).val() * volume;
-                            gainNodes[gainNodeKey].gain.value = volumes[gainNodeKey] * volumes["all"];
+                            setGainNodeVolume(gainNodes[gainNodeKey], volumes[gainNodeKey] * volumes["all"]);
                         }
                     } else {
                         if (gainNodeKey.split('_')[0] != 'piano' && gainNodeKey != 'metronome') {
                             volumes[gainNodeKey] = $(`#${gainNodeKey}`).val() * $(`#${gainNodeKey}_vocal`).val() * volume;
-                            gainNodes[gainNodeKey].gain.value = volumes[gainNodeKey] * volumes["all"];
+                            setGainNodeVolume(gainNodes[gainNodeKey], volumes[gainNodeKey] * volumes["all"]);
                         }
                     }
                 });
@@ -564,7 +601,7 @@ $(async function () {
             volumes[target] = $(`#${id[0]}`).val() * volume * $(`#whole_${id[1]}`).val();
 
             if (!isFirstPlay) {
-                gainNodes[target].gain.value = volumes[target] * volumes["all"];
+                setGainNodeVolume(gainNodes[target], volumes[target] * volumes["all"]);
             }
         }
     });
