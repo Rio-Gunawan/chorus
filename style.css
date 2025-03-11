@@ -149,8 +149,8 @@ button#play_and_pause:disabled {
 }
 
 button#play_and_pause:disabled svg {
-    fill: white;
-    color: white;
+    fill: #cfcfcf;
+    color: #cfcfcf;
 }
 
 #player button svg {
