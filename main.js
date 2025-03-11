@@ -41,15 +41,15 @@ let audioContext = null;
 
 // 読み込む音声ソース用のオブジェクト（プロパティ名は再生時に使用）
 const audioFiles = {
-    metronome: "./audios/メトロノーム.mp3",
-    soprano: "./audios/ソプラノ.mp3",
-    alto: "./audios/アルト.mp3",
-    tenor: "./audios/テノール.mp3",
-    bass: "./audios/バス.mp3",
-    piano_soprano: "./audios/ピアノ_ソプラノ.mp3",
-    piano_alto: "./audios/ピアノ_アルト.mp3",
-    piano_tenor: "./audios/ピアノ_テノール.mp3",
-    piano_bass: "./audios/ピアノ_バス.mp3"
+    metronome: "./audios/metronome.mp3",
+    soprano: "./audios/soprano.mp3",
+    alto: "./audios/alto.mp3",
+    tenor: "./audios/tenor.mp3",
+    bass: "./audios/bass.mp3",
+    piano_soprano: "./audios/piano_soprano.mp3",
+    piano_alto: "./audios/piano_alto.mp3",
+    piano_tenor: "./audios/piano_tenor.mp3",
+    piano_bass: "./audios/piano_bass.mp3"
 };
 
 // 音声ソース読み込み後のバッファ格納用
