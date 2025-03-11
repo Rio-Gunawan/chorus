@@ -149,7 +149,8 @@ button#play_and_pause:disabled {
 }
 
 button#play_and_pause:disabled svg {
-    fill: var(--medium-gray);
+    fill: white;
+    color: white;
 }
 
 #player button svg {
@@ -157,11 +158,13 @@ button#play_and_pause:disabled svg {
     height: 25px;
     fill: black;
     /* SVGの色を黒に設定 */
+    color: black;
     transition: fill 0.3s;
 }
 
 button#repeat svg {
     fill: #888;
+    color: #888;
 }
 
 button#repeat.active {
@@ -170,6 +173,7 @@ button#repeat.active {
 
 button#repeat.active svg {
     fill: white;
+    color: white;
 }
 
 button#play_and_pause svg {
@@ -188,11 +192,13 @@ button#play_and_pause svg {
 
     #player button:hover svg {
         fill: white;
+        color: white;
         /* ホバー時にSVGの色を白に変更 */
     }
 
     #player button:disabled:hover svg {
         fill: var(--medium-gray) !important;
+        color: var(--medium-gray) !important;
     }
 }
 
@@ -428,6 +434,7 @@ input[type="checkbox"] {
     height: 25px;
     fill: #888;
     /* SVGの色を黒に設定 */
+    color: #888;
     transition: fill 0.3s;
     transform: scale(0.6);
 }
@@ -439,6 +446,7 @@ button.active {
 
 button.mute.active svg {
     fill: white;
+    color: white;
 }
 
 button.mute[disabled] {
@@ -457,6 +465,7 @@ button.solo[disabled] {
 
 button.mute[disabled] svg {
     fill: var(--medium-gray);
+    color: var(--medium-gray);
 }
 
 .solo {
@@ -484,6 +493,7 @@ button.mute[disabled] svg {
 
     .setting_panel button:hover svg {
         fill: white;
+        color: white;
     }
 
     .setting_panel button[disabled]:hover {
@@ -492,6 +502,7 @@ button.mute[disabled] svg {
 
     .setting_panel button[disabled]:hover svg {
         fill: var(--medium-gray);
+        color: var(--medium-gray);
     }
 
     button.solo[disabled] {
