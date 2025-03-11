@@ -1,5 +1,15 @@
 @charset "UTF-8";
 
+:root {
+    --main-color: #2d3985;
+    --text-color: #444444;
+    --light-gray: #e0e0e0;
+    --medium-gray: #b0b0b0;
+    --dark-gray: #5c5c5c;
+    --hover-color: #e2edf9;
+    --tab-color: #f5f5f5;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -14,7 +24,7 @@
 
 body {
     font-size: min(18px, 4vw);
-    background-color: #e0e0e0;
+    background-color: var(--light-gray);
 }
 
 h1 {
@@ -22,7 +32,7 @@ h1 {
     font-weight: 400;
     padding: 0.5em 0;
     text-align: center;
-    background-color: #2d3985;
+    background-color: var(--main-color);
     color: white;
 }
 
@@ -93,7 +103,7 @@ h1 {
 /* ============== 再生ボタン等のあるブロックのスタイル ============== */
 #bottom_menu {
     background-color: white;
-    border-top: 1px solid #2d3985;
+    border-top: 1px solid var(--main-color);
     width: 100%;
     padding-top: 10px;
     position: fixed;
@@ -110,7 +120,7 @@ h1 {
 
 #player button {
     background-color: white;
-    border: 1px solid #2d3985;
+    border: 1px solid var(--main-color);
     border-radius: 50%;
 
     width: 45px;
@@ -131,13 +141,13 @@ button#play_and_pause {
 
 button#play_and_pause:disabled {
     background-color: #dddddd;
-    color: #b0b0b0;
+    color: var(--medium-gray);
     cursor: not-allowed;
     border: none;
 }
 
 button#play_and_pause:disabled svg {
-    fill: #b0b0b0;
+    fill: var(--medium-gray);
 }
 
 #player button svg {
@@ -166,7 +176,7 @@ button#play_and_pause svg {
 
 @media (hover: hover) and (pointer: fine) {
     #player button:hover {
-        background-color: #2d3985 !important;
+        background-color: var(--main-color) !important;
         color: white;
     }
 
@@ -180,7 +190,7 @@ button#play_and_pause svg {
     }
 
     #player button:disabled:hover svg {
-        fill: #b0b0b0 !important;
+        fill: var(--medium-gray) !important;
     }
 }
 
@@ -203,7 +213,7 @@ button#play_and_pause svg {
     appearance: none;
     width: calc(90% - 3em);
     height: 5px;
-    border: 1px solid #b0b0b0;
+    border: 1px solid var(--medium-gray);
     border-radius: 3px;
     cursor: pointer;
 }
@@ -219,7 +229,7 @@ button#play_and_pause svg {
     width: 15px;
     height: 15px;
     border-radius: 50%;
-    background: #2d3985;
+    background: var(--main-color);
     box-shadow: none;
 }
 
@@ -229,24 +239,24 @@ button#play_and_pause svg {
     width: 15px;
     height: 15px;
     border-radius: 50%;
-    background: #2d3985;
+    background: var(--main-color);
     box-shadow: none;
 }
 
 /* ツマミ:disabledの時 */
 .inputRange:disabled::-webkit-slider-thumb {
-    background: #b0b0b0;
+    background: var(--medium-gray);
     cursor: not-allowed;
 }
 
 .inputRange:disabled::-moz-range-thumb {
-    background: #b0b0b0;
+    background: var(--medium-gray);
     cursor: not-allowed;
 }
 
 /* 再生時間の表示 */
 .player_container {
-    color: #444444;
+    color: var(--text-color);
     width: 100%;
     padding: 15px 5%;
     display: flex;
@@ -289,11 +299,11 @@ input[type="radio"] {
 }
 
 .panel_area {
-    background: #f5f5f5;
+    background: var(--tab-color);
 }
 
 #tab1:checked~.tab_area .tab1_label {
-    background: #f5f5f5;
+    background: var(--tab-color);
     color: #000;
 }
 
@@ -304,7 +314,7 @@ input[type="radio"] {
 }
 
 #tab2:checked~.tab_area .tab2_label {
-    background: #f5f5f5;
+    background: var(--tab-color);
     color: #000;
 }
 
@@ -315,7 +325,7 @@ input[type="radio"] {
 }
 
 #tab3:checked~.tab_area .tab3_label {
-    background: #f5f5f5;
+    background: var(--tab-color);
     color: #000;
 }
 
@@ -360,12 +370,12 @@ h3 {
 input[type="text"] {
     width: 3em;
     padding: 5px;
-    border: 1px solid #b0b0b0;
+    border: 1px solid var(--medium-gray);
     border-radius: 5px;
 }
 
 input[type="text"]:disabled {
-    background-color: #f5f5f5;
+    background-color: var(--tab-color);
     cursor: not-allowed;
 }
 
@@ -373,7 +383,7 @@ select {
     width: 90%;
     padding: 5px;
     margin: 5px 0;
-    border: 1px solid #b0b0b0;
+    border: 1px solid var(--medium-gray);
     background-color: white;
     color: black;
     border-radius: 5px;
@@ -397,7 +407,7 @@ input[type="checkbox"] {
 
 .mute {
     background-color: white;
-    border: 1px solid #2d3985;
+    border: 1px solid var(--main-color);
     border-radius: 50%;
 
     width: 30px;
@@ -420,8 +430,9 @@ input[type="checkbox"] {
     transform: scale(0.6);
 }
 
-button.mute.active {
+button.active {
     background-color: #4e5aad;
+    color: white;
 }
 
 button.mute.active svg {
@@ -430,26 +441,26 @@ button.mute.active svg {
 
 button.mute[disabled] {
     background-color: #dddddd;
-    color: #b0b0b0;
+    color: var(--medium-gray);
     cursor: not-allowed;
     border: none;
 }
 
 button.solo[disabled] {
     background-color: #dddddd;
-    color: #b0b0b0;
+    color: var(--medium-gray);
     cursor: not-allowed;
-    border: 1px solid #b0b0b0;
+    border: 1px solid var(--medium-gray);
 }
 
 button.mute[disabled] svg {
-    fill: #b0b0b0;
+    fill: var(--medium-gray);
 }
 
 .solo {
     background-color: white;
     color: #888;
-    border: 1px solid #2d3985;
+    border: 1px solid var(--main-color);
     border-radius: 10px;
 
     height: 30px;
@@ -463,14 +474,9 @@ button.mute[disabled] svg {
     transition: background 0.3s;
 }
 
-button.solo.active {
-    background-color: #4e5aad;
-    color: white;
-}
-
 @media (hover: hover) and (pointer: fine) {
     .setting_panel button:hover {
-        background-color: #2d3985;
+        background-color: var(--main-color);
         color: white;
     }
 
@@ -483,12 +489,12 @@ button.solo.active {
     }
 
     .setting_panel button[disabled]:hover svg {
-        fill: #b0b0b0;
+        fill: var(--medium-gray);
     }
 
     button.solo[disabled] {
         background-color: #dddddd;
-        color: #b0b0b0;
+        color: var(--medium-gray);
     }
 }
 
@@ -497,7 +503,7 @@ button.solo.active {
 }
 
 .setting_panel.muted {
-    background-color: #f5f5f5;
+    background-color: var(--tab-color);
 }
 
 .setting_panel .buttons {
@@ -517,7 +523,7 @@ button.solo.active {
 /* ピアノかボカロかを選択する画面 */
 
 .instrument_type_container {
-    border: 1px solid #2d3985;
+    border: 1px solid var(--main-color);
     border-radius: 5px;
     margin: 5px 5%;
     display: flex;
@@ -532,17 +538,11 @@ button.solo.active {
     transition: 0.3s background;
 }
 
-.instrument_type_label:has(input[type="radio"]:checked) {
-    background: #2d3985;
-    /* マウス選択時の背景色を指定する */
-    color: #ffffff;
-    /* マウス選択時のフォント色を指定する */
-}
-
+.instrument_type_label:has(input[type="radio"]:checked),
 .instrument_type_label:has(input[type="checkbox"]:checked) {
-    background: #2d3985;
+    background: var(--main-color);
     /* マウス選択時の背景色を指定する */
-    color: #ffffff;
+    color: white;
     /* マウス選択時のフォント色を指定する */
 }
 
@@ -556,7 +556,7 @@ input[type="checkbox"].instrument_type {
 
 @media (hover: hover) and (pointer: fine) {
     .instrument_type_label:hover {
-        background-color: #E2EDF9;
+        background-color: var(--hover-color);
         /* マウスオーバー時の背景色を指定する */
     }
 }
@@ -596,7 +596,7 @@ details[open] .content {
 /* ============== footerのCSS ============== */
 footer {
     padding: 10px 5%;
-    background-color: #5c5c5c;
+    background-color: var(--dark-gray);
     color: white;
     font-size: 0.8em;
 }
@@ -622,7 +622,7 @@ footer li {
 
 .lyrics {
     padding: 0 5%;
-    background-color: #f5f5f5;
+    background-color: var(--tab-color);
     color: #999;
     font-size: 1.5em;
     line-height: 1.5em;
@@ -679,7 +679,6 @@ span.bar_num {
 
 iframe#score {
     width: 100%;
-    height: 100vh;
     border: none;
 }
 
