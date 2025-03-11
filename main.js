@@ -436,13 +436,12 @@ $(async function () {
         // ボタンの表示を切り替える
         $("#play").toggle();
         $("#pause").toggle();
+        $(this).attr("title", isPlaying ? "一時停止" : "再生").attr("aria-label", isPlaying ? "一時停止" : "再生");
 
         // isPlayingがtrueの時、音楽を再生し、再生と一時停止の表示を切り替える
         if (isPlaying) {
-            $(this).attr("title", "一時停止").attr("aria-label", "一時停止");
             playSound();
         } else {
-            $(this).attr("title", "再生").attr("aria-label", "再生");
             pauseSound();
         }
     });
