@@ -8,6 +8,7 @@
     --dark-gray: #5c5c5c;
     --hover-color: #e2edf9;
     --tab-color: #f5f5f5;
+    --shadow-color: #37373759;
 }
 
 * {
@@ -108,6 +109,7 @@ h1 {
     padding-top: 10px;
     position: fixed;
     bottom: 0;
+    box-shadow: 0 -3px 15px 0 var(--shadow-color);
 }
 
 /* 再生ボタン周辺のスタイル */
